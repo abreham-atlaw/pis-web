@@ -33,7 +33,7 @@ export default defineComponent({
 
     <div class="flex flex-wrap">
 
-        <button v-for="product, i in products" :key="i" class="px-10 py-3 mx-2 my-2 rounded-xl" :class="(selectedProduct === product)?'bg-warning':'bg-grey'" @click="() => {onSelect(product)}">
+        <button v-for="product, i in products" :key="i" class="px-10 py-3 mx-2 my-2 rounded-xl" :class="(selectedProduct === product)?'bg-warning   ':'bg-grey'" @click="() => {onSelect(product)}">
             {{ product.name }}
         </button>
 

@@ -4,7 +4,7 @@ import type Model from "@/common/models/model";
 export interface Transaction{
 
     quantity: number;
-    date?: Date;
+    date: Date;
     uid: string;
 
 }
@@ -40,5 +40,64 @@ export default class Trackable implements Model<string>{
         this.id = pk;
     }
 
+    private sumTransactions(transactions: Transaction[]): number {
+        let totalQuantity = 0;
+        for (const transaction of transactions) {
+            totalQuantity += transaction.quantity;
+        }
+        return totalQuantity;
+    }
+
+    private filterThisWeekTransactions(transactions: Transaction[]): Transaction[] {
+        const oneWeekAgo = new Date();
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); 
+        return transactions.filter(transaction => {
+            return transaction.date! >= oneWeekAgo;
+        });
+    }
+
+    get weeklyDeposit(){
+        return this.sumTransactions(
+            this.filterThisWeekTransactions(
+                this.transactions.filter(
+                    (transaction: Transaction) => {
+                        return transaction.quantity > 0;
+                    }
+                )
+            )
+        ) 
+    }
+
+    get weeklyWithdrawal(){
+        return -1*this.sumTransactions(
+            this.filterThisWeekTransactions(
+                this.transactions.filter(
+                    (transaction: Transaction) => {
+                        return transaction.quantity < 0;
+                    }
+                )
+            )
+        ) 
+    }
+
+    get totalWithdrawal(){
+        return -1*this.sumTransactions(
+            this.transactions.filter(
+                (transaction: Transaction) => {
+                    return transaction.quantity < 0;
+                }
+            )
+        )
+    }
+
+    get totalDeposit(){
+        return this.sumTransactions(
+            this.transactions.filter(
+                (transaction: Transaction) => {
+                    return transaction.quantity > 0;
+                }
+            )
+        )
+    }
 
 }

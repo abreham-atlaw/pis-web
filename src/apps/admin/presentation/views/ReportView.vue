@@ -3,8 +3,6 @@ import { ref, defineComponent } from 'vue';
 import ReportState from '../../application/states/reportState';
 import ReportViewModel from '../../application/viewModels/reportViewModel';
 import ViewModelView from '@/common/components/views/ViewModelView.vue';
-import type { Transaction } from '@/apps/core/data/models/trackable';
-import type Trackable from '@/apps/core/data/models/trackable';
 
 
 
@@ -13,47 +11,8 @@ export default defineComponent({
         let state = ref(new ReportState());
         return {
             state,
-            viewModel: new ReportViewModel(state.value)
+            viewModel: new ReportViewModel(state.value as any)
         };
-    },
-    methods: {
-        sumTransactions(transactions: Transaction[]): number {
-            let totalQuantity = 0;
-            for (let transaction of transactions) {
-                totalQuantity += transaction.quantity;
-            }
-            return totalQuantity;
-        },
-        filterThisWeekTransactions(transactions: Transaction[]): Transaction[] {
-            const oneWeekAgo = new Date();
-            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);  // Subtract 7 days from the current date
-
-            return transactions.filter(transaction => {
-                return transaction.date! >= oneWeekAgo;
-            });
-        },
-        calcWeeklyDeposit(trackable: Trackable){
-            return this.sumTransactions(
-                this.filterThisWeekTransactions(
-                    trackable.transactions.filter(
-                        (transaction: Transaction) => {
-                            return transaction.quantity > 0;
-                        }
-                    )
-                )
-            ) 
-        },
-        calcWeeklyWithdrawal(trackable: Trackable){
-            return -1*this.sumTransactions(
-                this.filterThisWeekTransactions(
-                    trackable.transactions.filter(
-                        (transaction: Transaction) => {
-                            return transaction.quantity < 0;
-                        }
-                    )
-                )
-            ) 
-        }
     },
     components: { ViewModelView }
 })
@@ -103,12 +62,12 @@ export default defineComponent({
                       {{ item.availableQuantity }} {{ item.unit }}
                     </td>
                     <td class="px-6 py-4 text-gray-500 border-b">
-                        {{ calcWeeklyDeposit(item) }} {{ item.unit }}
+                        {{ item.weeklyDeposit }} {{ item.unit }}
                       </td>
                     <td
                       class="px-6 py-4 text-sm text-dark text-right font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap"
                     >
-                     {{ calcWeeklyWithdrawal(item) }} {{ item.unit }}
+                     {{ item.weeklyWithdrawal }} {{ item.unit }}
                     </td>
                   </tr>
                 </tbody>
@@ -153,12 +112,12 @@ export default defineComponent({
                       {{ product.availableQuantity }}
                     </td>
                     <td class="px-6 py-4 text-gray-500 border-b">
-                        {{ calcWeeklyDeposit(product) }}
+                        {{ product.weeklyDeposit }}
                       </td>
                     <td
                       class="px-6 py-4 text-gray-500 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap"
                     >
-                      {{ calcWeeklyWithdrawal(product) }}
+                      {{ product.weeklyWithdrawal }}
                     </td>
                   </tr>
                 </tbody>

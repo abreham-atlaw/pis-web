@@ -6,10 +6,10 @@ export default class Account implements Model<string>{
 	public username: string;
 
 	constructor(
-		id: string,
+		uid: string,
 		username: string,
 	){
-		this.uid = id;
+		this.uid = uid;
 		this.username = username;
 	}
 
