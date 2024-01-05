@@ -18,5 +18,7 @@ export default defineComponent({
 })
 </script>
 <template>
-    <AuthenticatedView :redirection-map="redirectionMap" :valid-status="[]"/>
+    <div class="h-screen">
+        <AuthenticatedView :redirection-map="redirectionMap" :valid-status="[]"/>
+    </div>
 </template>

@@ -6,7 +6,15 @@ import Form from "@/common/forms/form";
 export default class SellForm extends Form{
 
     product = new Field<Product>();
-    quantity = new Field<number>();
+    quantity = new Field<number>(
+        true,
+        (value: number) => {
+            if(value <= 0){
+                return "Quantity must be at least 1."
+            }
+            return null;
+        }
+    );
 
     getFields(): Field<any>[] {
         return [

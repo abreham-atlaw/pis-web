@@ -1,3 +1,4 @@
+import type Account from "@/apps/auth/data/models/account";
 import type Model from "@/common/models/model";
 
 
@@ -6,6 +7,7 @@ export interface Transaction{
     quantity: number;
     date: Date;
     uid: string;
+    account?: Account
 
 }
 

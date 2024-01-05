@@ -40,7 +40,7 @@ export default defineComponent({
 </script>
 <template>
     <ViewModelViewVue :state="state" :view-model="viewModel" class="flex">
-        <div class="backdrop-blur-xl mr-auto m-10 p-10 rounded-2xl w-1/2">
+        <div class="backdrop-blur-xl mr-auto mb-auto m-10 p-16 rounded-2xl w-1/2">
             <h1 class="text-2xl font-extrabold">Inventory Item</h1>
 
             <form @submit.prevent="submit" class="mt-10">

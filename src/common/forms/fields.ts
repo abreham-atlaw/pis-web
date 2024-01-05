@@ -1,4 +1,3 @@
-import { sleep } from "../utils/time";
 
 export default class Field<T>{
 
@@ -8,7 +7,7 @@ export default class Field<T>{
 	public validator: Function | null;
 	public liveValidate: boolean;
 
-	constructor(required: boolean = true, validator: Function|null = null, liveValidate: boolean = true, validationGap: number = 2000){
+	constructor(required: boolean = true, validator: Function|null = null, liveValidate: boolean = true){
 		this.required = required;
 		this.validator = validator;
 		this.liveValidate = liveValidate;

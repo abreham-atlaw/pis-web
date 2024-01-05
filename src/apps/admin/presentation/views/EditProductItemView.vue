@@ -42,7 +42,7 @@ export default defineComponent({
 </script>
 <template>
     <ViewModelViewVue :state="state" :view-model="viewModel" class="flex">
-        <div class="backdrop-blur-xl mr-auto m-10 p-10 rounded-2xl w-2/3">
+        <div class="backdrop-blur-xl mr-auto m-10 mb-auto p-16 rounded-2xl w-2/3">
             <h1 class="text-2xl font-extrabold">Inventory Item</h1>
 
             <form @submit.prevent="submit" class="mt-10">
@@ -51,7 +51,7 @@ export default defineComponent({
                 <LabeledFieldComponent label="Name">
                     <TextFieldComponent :field="state.form.name"/>
                 </LabeledFieldComponent>
-                <ProductIngredientsComponent class="mt-10" :inventory-items="state.inventoryItems!" :field="state.form.ingredients" :product="(state.instance! as Product)"/>
+                <ProductIngredientsComponent class="mt-10" :inventory-items="(state.inventoryItems! as any)" :field="state.form.ingredients" :product="(state.instance! as Product)"/>
 
                 <div class="w-full mt-10 flex">
                     <AsyncButton :state="state" class="mr-5">

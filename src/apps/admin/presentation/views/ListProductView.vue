@@ -14,7 +14,7 @@ export default defineComponent({
         let state = ref(new ModelListState<Product>());
         return {
             state,
-            viewModel: new ModelListViewModel<Product>(state.value, new ProductRepository())
+            viewModel: new ModelListViewModel<Product>(state.value as any, new ProductRepository())
         };
     },
     components: { ViewModelView, BaseButtonVue }
@@ -25,7 +25,7 @@ export default defineComponent({
 
     <ViewModelView :view-model="viewModel" :state="state">
 
-        <div class="backdrop-blur-xl rounded-2xl p-10">
+        <div class="backdrop-blur-xl rounded-2xl p-10 mx-6 my-8">
             <div class="flex">
                 <h1 class="text-3xl">Products</h1>
                 <RouterLink to="/admin/product/edit" class="block ml-auto"><BaseButtonVue>New</BaseButtonVue></RouterLink>
@@ -77,7 +77,6 @@ export default defineComponent({
                     <td
                         class="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap"
                     >
-                        <!-- <RouterLink :to="`/admin/product/transact?id=${product.id}`" class="text-indigo-600 hover:text-indigo-900 mr-8"><BaseButtonVue>Add</BaseButtonVue></RouterLink> -->
                         <RouterLink :to="`/admin/product/edit?id=${product.id}`" class="text-indigo-600 hover:text-indigo-900"><BaseButtonVue bg="primaryDark">Edit</BaseButtonVue></RouterLink>
                     </td>
                     </tr>

@@ -41,7 +41,7 @@ export default abstract class EditModelViewModel<M extends Model<string>, F exte
             async () => {
                 await this.state.form.validate(true);
                 this.syncFormToModel(this.state.form, this.state.instance!);
-                this.repository.save(this.state.instance!);
+                await this.repository.save(this.state.instance!);
             }
         )
 

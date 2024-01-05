@@ -3,7 +3,8 @@ import { ref, defineComponent } from 'vue';
 import ReportState from '../../application/states/reportState';
 import ReportViewModel from '../../application/viewModels/reportViewModel';
 import ViewModelView from '@/common/components/views/ViewModelView.vue';
-
+import BaseButton from '@/common/components/buttons/BaseButton.vue';
+import MathUtils from '@/common/utils/math';
 
 
 export default defineComponent({
@@ -11,17 +12,18 @@ export default defineComponent({
         let state = ref(new ReportState());
         return {
             state,
-            viewModel: new ReportViewModel(state.value as any)
+            viewModel: new ReportViewModel(state.value as any),
+            MathUtils
         };
     },
-    components: { ViewModelView }
+    components: { ViewModelView, BaseButton }
 })
 
 </script>
 <template>
     <ViewModelView :state="state" :view-model="viewModel">
 
-        <div class="">
+        <div class="px-6 py-8">
 
             <h1 class="text-2xl">Inventory</h1>
             <table class="w-full mt-5 text-left border-collapse bg-light ">
@@ -47,6 +49,10 @@ export default defineComponent({
                     >
                       Usage(week)
                     </th>
+                    <th
+                      class="px-5 text-right py-3 text-sm font-medium text-gray-100 uppercase bg-red-800"
+                    >
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -59,15 +65,22 @@ export default defineComponent({
                       {{ item.name }}
                     </td>
                     <td class="px-6 py-4 text-gray-500 border-b">
-                      {{ item.availableQuantity }} {{ item.unit }}
+                      {{ MathUtils.round(item.availableQuantity, 2) }} {{ item.unit }}
                     </td>
                     <td class="px-6 py-4 text-gray-500 border-b">
-                        {{ item.weeklyDeposit }} {{ item.unit }}
+                        {{ MathUtils.round(item.weeklyDeposit, 2) }} {{ item.unit }}
                       </td>
                     <td
                       class="px-6 py-4 text-sm text-dark text-right font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap"
                     >
-                     {{ item.weeklyWithdrawal }} {{ item.unit }}
+                     {{ MathUtils.round(item.weeklyWithdrawal, 2) }} {{ item.unit }}
+                    </td>
+                    <td
+                      class="px-6 py-4 text-sm text-dark text-right font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap"
+                    >
+                     <RouterLink :to="`/admin/inventory/track?id=${item.id}`">
+                        <BaseButton>TRACK</BaseButton>
+                     </RouterLink>
                     </td>
                   </tr>
                 </tbody>
@@ -97,6 +110,10 @@ export default defineComponent({
                     >
                       Sales(week)
                     </th>
+                    <th
+                      class="px-5 py-3 text-right text-sm font-medium text-gray-100 uppercase bg-indigo-800"
+                    >
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -118,6 +135,13 @@ export default defineComponent({
                       class="px-6 py-4 text-gray-500 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap"
                     >
                       {{ product.weeklyWithdrawal }}
+                    </td>
+                    <td
+                      class="px-6 py-4 text-sm text-dark text-right font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap"
+                    >
+                     <RouterLink :to="`/admin/product/track?id=${product.id}`">
+                        <BaseButton>TRACK</BaseButton>
+                     </RouterLink>
                     </td>
                   </tr>
                 </tbody>

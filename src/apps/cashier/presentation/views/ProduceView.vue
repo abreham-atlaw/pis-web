@@ -7,6 +7,7 @@ import LabeledFieldComponent from '@/common/components/form/LabeledFieldComponen
 import ProductChoiceField from '../components/ProductChoiceField.vue';
 import AsyncButton from '@/common/components/buttons/AsyncButton.vue';
 import TextFieldComponentVue from '@/common/components/form/TextFieldComponent.vue';
+import ToastUtils from '@/common/utils/toast';
 
 
 export default defineComponent({
@@ -14,12 +15,13 @@ export default defineComponent({
         let state = ref(new ProduceState());
         return {
             state,
-            viewModel: new ProduceViewModel(state.value)
+            viewModel: new ProduceViewModel(state.value as any)
         };
     },
     methods:{
-        produce(){
-            this.viewModel.produce()
+        async produce(){
+            await this.viewModel.produce()
+            ToastUtils.toast(this, "Product Created.")
         }
     },
     components: { ViewModelViewVue, LabeledFieldComponent, ProductChoiceField, AsyncButton, TextFieldComponentVue }
@@ -34,7 +36,7 @@ export default defineComponent({
             <form class="mt-10" @submit.prevent="produce">
 
                 <LabeledFieldComponent label="Product">
-                    <ProductChoiceField :products="state.products!" :field="state.form.product"/>
+                    <ProductChoiceField :products="(state.products! as any)" :field="(state.form.product as any)"/>
                 </LabeledFieldComponent>
                 <LabeledFieldComponent label="Quantity" class="mt-10">
                     <TextFieldComponentVue type="number" :field="(state.form.quantity as any)" :prepare-input="(value: string) => {return Number.parseInt(value)}"/>

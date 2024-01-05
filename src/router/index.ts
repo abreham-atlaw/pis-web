@@ -11,7 +11,9 @@ import SellViewVue from '@/apps/cashier/presentation/views/SellView.vue'
 import ProduceViewVue from '@/apps/cashier/presentation/views/ProduceView.vue'
 import ReportViewVue from '@/apps/admin/presentation/views/ReportView.vue'
 import DashboardViewVue from '@/apps/admin/presentation/views/DashboardView.vue'
-import SplashViewVue from '@/apps/admin/presentation/views/SplashView.vue'
+import SplashViewVue from '@/apps/core/presentation/views/SplashView.vue'
+import TrackInventoryItemViewVue from '@/apps/admin/presentation/views/TrackInventoryItemView.vue'
+import TrackProductVIewVue from '@/apps/admin/presentation/views/TrackProductVIew.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,7 +53,11 @@ const router = createRouter({
           name: "Edit Inventory",
           component: EditInventoryItemViewVue
         },
-
+        {
+          path: "inventory/track",
+          name: "Track Inventory",
+          component: TrackInventoryItemViewVue
+        },
         {
           path: "product/list",
           name: "List Product",
@@ -61,6 +67,11 @@ const router = createRouter({
           path: "product/edit",
           name: "Edit Product",
           component: EditProductItemViewVue
+        },
+        {
+          path: "product/track",
+          name: "Track Product",
+          component: TrackProductVIewVue
         },
         {
           path: "report",

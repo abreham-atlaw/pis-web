@@ -1,10 +1,10 @@
-
 <script lang="ts">
 import InventoryItem from '@/apps/core/data/models/inventoryItem';
 import InventoryItemRepository from '@/apps/core/data/repositories/inventoryItemRepository';
 import BaseButtonVue from '@/common/components/buttons/BaseButton.vue';
 import ViewModelView from '@/common/components/views/ViewModelView.vue';
 import ModelListState from '@/common/state/modelListState';
+import MathUtils from '@/common/utils/math';
 import ModelListViewModel from '@/common/viewmodel/modelListViewModel';
 import { defineComponent, ref } from 'vue';
 
@@ -14,7 +14,8 @@ export default defineComponent({
         let state = ref(new ModelListState<InventoryItem>());
         return {
             state,
-            viewModel: new ModelListViewModel<InventoryItem>(state.value, new InventoryItemRepository())
+            viewModel: new ModelListViewModel<InventoryItem>(state.value as any, new InventoryItemRepository()),
+            MathUtils
         };
     },
     components: { ViewModelView, BaseButtonVue }
@@ -25,7 +26,7 @@ export default defineComponent({
 
     <ViewModelView :view-model="viewModel" :state="state">
 
-        <div class="backdrop-blur-xl rounded-2xl p-10">
+        <div class="backdrop-blur-xl rounded-2xl p-10 mx-6 my-8">
             <div class="flex">
                 <h1 class="text-3xl">Inventory Items</h1>
                 <RouterLink to="/admin/inventory/edit" class="block ml-auto"><BaseButtonVue>New</BaseButtonVue></RouterLink>
@@ -65,7 +66,7 @@ export default defineComponent({
                         {{ item.name }}
                     </td>
                     <td class="px-6 py-4 border-b">
-                        {{  item.availableQuantity }}
+                        {{  MathUtils.round(item.availableQuantity, 2) }}
                     </td>
                     <td class="px-6 py-4 border-b">
                         {{  item.unit }}

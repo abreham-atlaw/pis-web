@@ -3,6 +3,7 @@ import { defineComponent, ref } from 'vue';
 import DashboardState from '../../application/states/dashboardState';
 import DashboardViewModel from '../../application/viewModels/dashboardViewModel';
 import ViewModelView from '@/common/components/views/ViewModelView.vue';
+import MathUtils from '@/common/utils/math';
 
 
 export default defineComponent({
@@ -10,7 +11,8 @@ export default defineComponent({
         let state = ref(new DashboardState());
         return {
             state,
-            viewModel: new DashboardViewModel(state.value as any)
+            viewModel: new DashboardViewModel(state.value as any),
+            MathUtils
         };
     },
     components: { ViewModelView }
@@ -20,7 +22,7 @@ export default defineComponent({
 <template>
 
     <ViewModelView :view-model="viewModel" :state="state">
-        <div>
+        <div class="py-8 px-6">
             <h3 class="text-3xl font-medium">
               Dashboard
             </h3>
@@ -186,7 +188,7 @@ export default defineComponent({
                           {{ item.name }}
                         </td>
                         <td class="px-6 py-4 text-gray-500 border-b">
-                          {{ item.availableQuantity }}
+                          {{ MathUtils.round(item.availableQuantity, 2) }}
                         </td>
                         
                       </tr>

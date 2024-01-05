@@ -9,7 +9,7 @@ export default class CashierSerializer extends AccountSerializer<Cashier>{
 	deserialize(data: DocumentData): Cashier {
 		return new Cashier(
 			data.uid,
-			data.fullName
+			data.username
 		)
 	}
 

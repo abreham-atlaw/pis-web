@@ -48,7 +48,7 @@ export default defineComponent({
 <template>
     <ViewModelView :view-model="viewModel" :state="state">
 
-        <div class="backdrop-blur-xl mr-auto m-10 p-10 rounded-2xl w-1/2">
+        <div class="backdrop-blur-xl mr-auto m-10 p-16 rounded-2xl w-1/2">
 
             <h1 class="text-2xl font-extrabold">Inventory Transaction ( {{ state.trackable!.name }} )</h1>
 
