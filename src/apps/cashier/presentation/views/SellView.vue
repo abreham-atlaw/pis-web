@@ -14,7 +14,7 @@ export default defineComponent({
         let state = ref(new SellState());
         return {
             state,
-            viewModel: new SellViewModel(state.value)
+            viewModel: new SellViewModel(state.value as any)
         };
     },
     methods: {
@@ -48,7 +48,7 @@ export default defineComponent({
                         </div>
 
                         <LabeledFieldComponent label="Product" class="mt-10">
-                            <ProductChoiceField :products="state.products!" :field="form.product"/>
+                            <ProductChoiceField :products="state.products! as any" :field="form.product as any"/>
                         </LabeledFieldComponent>
                         <LabeledFieldComponent label="Quantity" class="mt-10">
                             <TextFieldComponent type="number" :field="(form.quantity as any)" :prepare-input="(value: string) => {return Number.parseInt(value)}"/>
