@@ -52,6 +52,9 @@ export default defineComponent({
                 <LabeledFieldComponent label="Unit" class="mt-10">
                     <TextFieldComponent :field="state.form.unit"/>
                 </LabeledFieldComponent>
+                <LabeledFieldComponent label="Price" class="mt-10">
+                    <TextFieldComponent type="number" :field="(state.form.price as any)" :prepare-input="(value: string) => {return Number.parseInt(value)}"/>
+                </LabeledFieldComponent>
 
                 <div class="w-full mt-10 flex">
                     <AsyncButton :state="state" class="mr-5">

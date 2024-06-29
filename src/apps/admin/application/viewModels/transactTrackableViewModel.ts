@@ -35,7 +35,7 @@ export default class TransactTrackableViewModel extends AsyncViewModel<TransactT
         await this.asyncCall(
             async () => {
                 await this.state.form.validate(true);
-                await this.repository.transact(this.state.trackable!, this.getIncrement());
+                await this.repository.transact(this.state.trackable!, this.getIncrement(), this.state.form.price.getValue()!);
             }
         )
     }

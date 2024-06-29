@@ -12,14 +12,16 @@ export default class TransactionSerializer extends Serializer<Transaction, Docum
         return {
             quantity: instance.quantity,
             date: this.dateSerializer.serialize(instance.date),
-            uid: instance.uid
+            uid: instance.uid,
+            price: instance.price
         }
     }
     deserialize(data: DocumentData): Transaction {
         return {
             quantity: data.quantity,
             date: this.dateSerializer.deserialize(data.date),
-            uid: data.uid
+            uid: data.uid,
+            price: data.price
         }
     }
 

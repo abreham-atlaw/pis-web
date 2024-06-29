@@ -2,7 +2,7 @@
 import Sidebar from '../components/SidebarComponent.vue'
 import Header from '../components/HeaderComponent.vue'
 import { RouterView } from 'vue-router'
-import BGImage from '@/assets/admin/images/01.jpeg'
+import BGImage from '@/assets/admin/images/01.png'
 import AuthenticatedViewVue from '@/common/components/views/AuthenticatedView.vue';
 import AuthenticationStatus from '@/apps/auth/data/models/authenticationStatus';
 

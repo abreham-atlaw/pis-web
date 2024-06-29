@@ -4,16 +4,13 @@ import DashboardBaseViewVue from '@/apps/admin/presentation/views/BaseDashboardV
 import EditInventoryItemViewVue from '@/apps/admin/presentation/views/EditInventoryItemView.vue'
 import ListInventoryViewVue from '@/apps/admin/presentation/views/ListInventoryView.vue'
 import TransactInventoryItemViewVue from '@/apps/admin/presentation/views/TransactInventoryItemView.vue'
-import EditProductItemViewVue from '@/apps/admin/presentation/views/EditProductItemView.vue'
-import ListProductViewVue from '@/apps/admin/presentation/views/ListProductView.vue'
 import CashierViewVue from '@/apps/cashier/presentation/views/CashierView.vue'
 import SellViewVue from '@/apps/cashier/presentation/views/SellView.vue'
-import ProduceViewVue from '@/apps/cashier/presentation/views/ProduceView.vue'
 import ReportViewVue from '@/apps/admin/presentation/views/ReportView.vue'
 import DashboardViewVue from '@/apps/admin/presentation/views/DashboardView.vue'
 import SplashViewVue from '@/apps/core/presentation/views/SplashView.vue'
 import TrackInventoryItemViewVue from '@/apps/admin/presentation/views/TrackInventoryItemView.vue'
-import TrackProductVIewVue from '@/apps/admin/presentation/views/TrackProductVIew.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,21 +56,6 @@ const router = createRouter({
           component: TrackInventoryItemViewVue
         },
         {
-          path: "product/list",
-          name: "List Product",
-          component: ListProductViewVue
-        },
-        {
-          path: "product/edit",
-          name: "Edit Product",
-          component: EditProductItemViewVue
-        },
-        {
-          path: "product/track",
-          name: "Track Product",
-          component: TrackProductVIewVue
-        },
-        {
           path: "report",
           name: "Report",
           component: ReportViewVue
@@ -90,11 +72,6 @@ const router = createRouter({
           name: "Sell",
           component: SellViewVue
         },
-        {
-          path: "produce",
-          name: "Produce",
-          component: ProduceViewVue
-        }
       ]
     }
   ]

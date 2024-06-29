@@ -7,11 +7,13 @@ export default class TransactTrackableForm extends Form{
     
     quantity = new Field<number>();
     disposal = new Field<boolean>();
+    price = new Field<number>();
 
     getFields(): Field<any>[] {
         return [
             this.quantity,
-            this.disposal
+            this.disposal,
+            this.price
         ]
     }
 

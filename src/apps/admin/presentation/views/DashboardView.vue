@@ -143,10 +143,10 @@ export default defineComponent({
         
                     <div class="mx-5">
                       <h4 class="text-2xl font-semibold text-gray-700">
-                        {{ state.totalProducts! }}
+                        {{ state.totalItems! }}
                       </h4>
                       <div class="text-gray-500">
-                        Total Products
+                        Total Items
                       </div>
                     </div>
                   </div>
@@ -156,8 +156,8 @@ export default defineComponent({
         
             <div class="mt-8" />
         
-            <div class="flex">
-              <div class="flex flex-col mt-8 w-1/2 px-2">
+            <div class="flex flex-wrap">
+              <div class="flex flex-col mt-8 w-full md:w-1/2 px-2">
                 <h3 class="text-2xl font-medium">
                   Low Inventory Alert
                 </h3>
@@ -198,9 +198,9 @@ export default defineComponent({
               </div>
               </div>
         
-              <div class="flex flex-col mt-8 w-1/2 px-2">
+              <div class="flex flex-col mt-8 w-full md:w-1/2 px-2">
                 <h3 class="text-2xl font-medium">
-                  Top Products
+                  Top Items
                 </h3>
               <div class="mt-2">
                 <div class="my-6 overflow-hidden bg-white rounded-md shadow">
@@ -210,7 +210,7 @@ export default defineComponent({
                         <th
                           class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-green-800"
                         >
-                          Product
+                          Item
                         </th>
                         <th
                           class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-green-800"
@@ -221,15 +221,15 @@ export default defineComponent({
                     </thead>
                     <tbody>
                       <tr
-                        v-for="(product, index) in state.topProducts!"
+                        v-for="(item, index) in state.topItems!"
                         :key="index"
                         class="hover:bg-gray-200"
                       >
                         <td class="px-6 py-4 text-lg text-gray-700 border-b">
-                          {{ product.name }}
+                          {{ item.name }}
                         </td>
                         <td class="px-6 py-4 text-gray-500 border-b">
-                          {{ product.weeklyWithdrawal }}
+                          {{ item.weeklyWithdrawal }}
                         </td>
                         
                       </tr>

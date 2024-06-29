@@ -1,22 +1,22 @@
 import AsyncViewModel from "@/common/viewmodel/asyncViewModel";
 import type SellState from "../states/sellState";
-import ProductRepository from "@/apps/core/data/repositories/productRepository";
 import SellForm from "../forms/sellForm";
+import InventoryItemRepository from "@/apps/core/data/repositories/inventoryItemRepository";
 
 
 
 export default class SellViewModel extends AsyncViewModel<SellState>{
 
 
-    private repository = new ProductRepository();
+    private repository = new InventoryItemRepository();
 
     public async onInit(): Promise<void> {
         await super.onInit();
-        this.state.products = await this.repository.getAll();
+        this.state.items = await this.repository.getAll();
     }
 
     private async transactForm(form: SellForm){
-        await this.repository.transact(form.product.getValue()!, -form.quantity.getValue()!);
+        await this.repository.transact(form.item.getValue()!, -form.quantity.getValue()!, form.price.getValue()!);
     }
 
     addForm(){

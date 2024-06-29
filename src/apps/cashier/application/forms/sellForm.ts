@@ -1,11 +1,11 @@
-import Product from "@/apps/core/data/models/product";
+import type Item from "@/apps/core/data/models/inventoryItem";
 import Field from "@/common/forms/fields";
 import Form from "@/common/forms/form";
 
 
 export default class SellForm extends Form{
 
-    product = new Field<Product>();
+    item = new Field<Item>();
     quantity = new Field<number>(
         true,
         (value: number) => {
@@ -15,11 +15,13 @@ export default class SellForm extends Form{
             return null;
         }
     );
+    price = new Field<number>();
 
     getFields(): Field<any>[] {
         return [
-            this.product,
-            this.quantity
+            this.item,
+            this.quantity,
+            this.price
         ]
     }
 }

@@ -12,6 +12,7 @@ let isOpen = ref(true);
 </script>
 
 <template>
+  <div class="absolute block top-4 left-4 bg-primary p-5 shadow-lg rounded-xl" @click="isOpen = true"><i class="fa-solid fa-bars text-light"></i></div>
   <div class="flex">
     <!-- Backdrop -->
     <div
@@ -29,7 +30,7 @@ let isOpen = ref(true);
         <div class="flex items-center flex-col">
           <img :src="logoImg" class="w-12 h-12">
 
-          <div class="mx-2 text-2xl font-semibold text-white">Mart Dashboard</div>
+          <div class="mx-2 text-2xl font-semibold text-white">Trimol Dashboard</div>
         </div>
       </div>
 
@@ -88,25 +89,6 @@ let isOpen = ref(true);
 
         <router-link
           class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
-          :class="[$route.name === 'Forms' ? activeClass : inactiveClass]"
-          to="/admin/product/list"
-        >
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path
-              d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"
-            />
-            <path
-              fill-rule="evenodd"
-              d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-              clip-rule="evenodd"
-            />
-          </svg>
-
-          <span class="mx-4">Products</span>
-        </router-link>
-
-        <router-link
-          class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
           :class="[$route.name === 'Cards' ? activeClass : inactiveClass]"
           to="/admin/report"
         >
@@ -118,6 +100,15 @@ let isOpen = ref(true);
           <span class="mx-4">Report</span>
         </router-link>
 
+      </nav>
+      <nav class="mt-24">
+        <router-link
+          class="flex items-center px-6 py-2 mt-4 duration-200"
+          to="/auth/login"
+        >
+         <i class="fa-solid fa-right-from-bracket text-light"></i>  
+          <span class="mx-4 text-light">SIGN OUT</span>
+        </router-link>
       </nav>
     </div>
   </div>

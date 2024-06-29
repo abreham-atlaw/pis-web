@@ -51,6 +51,11 @@ export default defineComponent({
                     <th
                         class="px-6 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800"
                     >
+                        Price
+                    </th>
+                    <th
+                        class="px-6 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800"
+                    >
                         Date & Time
                     </th>
                     <th
@@ -78,6 +83,9 @@ export default defineComponent({
                     </td>
                     <td class="px-6 py-4 text-lg border-b">
                         {{ Math.abs(transaction.quantity) }}
+                    </td>
+                    <td class="px-6 py-4 text-lg border-b">
+                        {{ transaction.price }}
                     </td>
                     <td class="px-6 py-4 border-b">
                         {{  transaction.date.toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) }}

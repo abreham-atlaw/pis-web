@@ -58,6 +58,9 @@ export default defineComponent({
                 <LabeledFieldComponentVue label="Quantity">
                     <TextFieldComponent :field="(state.form.quantity as any)" type="number" :prepare-input="(value: string) => {return Number.parseFloat(value)}"/>
                 </LabeledFieldComponentVue>
+                <LabeledFieldComponentVue label="Price" class="mt-10">
+                    <TextFieldComponent type="number" :field="(state.form.price as any)" :prepare-input="(value: string) => {return Number.parseInt(value)}"/>
+                </LabeledFieldComponentVue>
                 <LabeledFieldComponentVue label="Dispose" class="mt-10">
                     <BooleanFieldComponentVue :field="state.form.disposal"/>
                 </LabeledFieldComponentVue>

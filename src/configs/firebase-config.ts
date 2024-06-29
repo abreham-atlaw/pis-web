@@ -1,9 +1,9 @@
 export const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyCZhBsc80NvZC4UpGfIG-fXTDurFRTEMhM",
-  authDomain: "martbis-18607.firebaseapp.com",
-  projectId: "martbis-18607",
-  storageBucket: "martbis-18607.appspot.com",
-  messagingSenderId: "592639576924",
-  appId: "1:592639576924:web:3e8e865f088a6226ca4f99",
-  measurementId: "G-5MQETVD8QG"
+  apiKey: "AIzaSyBe3sxi9630S7Vv5l3pmWCX6m4KKNOuBe0",
+  authDomain: "trimol-pis.firebaseapp.com",
+  projectId: "trimol-pis",
+  storageBucket: "trimol-pis.appspot.com",
+  messagingSenderId: "582751171823",
+  appId: "1:582751171823:web:ee42858bdae0f36cd3d71a",
+  measurementId: "G-BXLBF7RP66"
 };

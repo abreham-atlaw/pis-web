@@ -3,7 +3,7 @@ import { ref, defineComponent } from 'vue';
 import SellState from '../../application/states/sellState';
 import SellViewModel from '../../application/viewModels/sellViewModel';
 import ViewModelView from '@/common/components/views/ViewModelView.vue';
-import ProductChoiceField from '../components/ProductChoiceField.vue';
+import ItemChoiceField from '../components/ProductChoiceField.vue';
 import LabeledFieldComponent from '@/common/components/form/LabeledFieldComponent.vue';
 import TextFieldComponent from '@/common/components/form/TextFieldComponent.vue';
 import AsyncButton from '@/common/components/buttons/AsyncButton.vue';
@@ -28,7 +28,7 @@ export default defineComponent({
             this.viewModel.removeForm(idx);
         }
     },
-    components: { ViewModelView, ProductChoiceField, LabeledFieldComponent, TextFieldComponent, AsyncButton }
+    components: { ViewModelView, ItemChoiceField, LabeledFieldComponent, TextFieldComponent, AsyncButton }
 })
 
 </script>
@@ -47,11 +47,14 @@ export default defineComponent({
                             <button @click.prevent="() => {removeForm(i)}" class="ml-auto"><i class="fa-solid fa-trash p-2 bg-danger text-light rounded"></i></button>
                         </div>
 
-                        <LabeledFieldComponent label="Product" class="mt-10">
-                            <ProductChoiceField :products="state.products! as any" :field="form.product as any"/>
+                        <LabeledFieldComponent label="Item" class="mt-10">
+                            <ItemChoiceField :items="state.items! as any" :field="form.item as any"/>
                         </LabeledFieldComponent>
                         <LabeledFieldComponent label="Quantity" class="mt-10">
                             <TextFieldComponent type="number" :field="(form.quantity as any)" :prepare-input="(value: string) => {return Number.parseInt(value)}"/>
+                        </LabeledFieldComponent>
+                        <LabeledFieldComponent label="Price" class="mt-10">
+                            <TextFieldComponent type="number" :field="(form.price as any)" :prepare-input="(value: string) => {return Number.parseInt(value)}"/>
                         </LabeledFieldComponent>
     
                     </form>
@@ -68,13 +71,15 @@ export default defineComponent({
                 <h2 class="text-2xl font-extrabold">Sale Summary</h2>
 
                 <div class="flex font-extrabold mt-10">
-                    <span class="w-1/2">Item</span>
-                    <span class="w-1/2">Quantity</span>
+                    <span class="w-1/3">Item</span>
+                    <span class="w-1/3">Quantity</span>
+                    <span class="w-1/3">Price</span>
                 </div>
 
                 <div v-for="form, i in state.forms" :key="i" class="flex mt-5">
-                    <span class="w-1/2">{{ form.product.getValue()?.name }}</span>
-                    <span class="w-1/2">{{ form.quantity.getValue() }}</span>
+                    <span class="w-1/3">{{ form.item.getValue()?.name }}</span>
+                    <span class="w-1/3">{{ form.quantity.getValue() }}</span>
+                    <span class="w-1/3">{{ form.price.getValue() }}</span>
                 </div>
 
                 <div class="mt-auto">

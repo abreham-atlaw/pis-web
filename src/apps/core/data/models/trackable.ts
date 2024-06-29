@@ -7,7 +7,8 @@ export interface Transaction{
     quantity: number;
     date: Date;
     uid: string;
-    account?: Account
+    account?: Account;
+    price: number;
 
 }
 
@@ -15,22 +16,26 @@ export default class Trackable implements Model<string>{
 
     id: string | null;
     name: string;
+    price: number;
     availableQuantity: number;
     transactions: Transaction[];
 
     constructor({
         id=null,
         name,
+        price,
         availableQuantity=0,
         transactions=[]
     }:{
         id?: string | null,
         name: string,
+        price: number,
         availableQuantity?: number,
         transactions?: Transaction[]
     }){
         this.id = id;
         this.name = name;
+        this.price = price;
         this.availableQuantity = availableQuantity
         this.transactions = transactions
     }

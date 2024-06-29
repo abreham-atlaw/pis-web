@@ -9,11 +9,12 @@ export default class TrackableRepository<T extends Trackable> extends FireStoreR
 
 	private authenticator = new Authenticator();
 
-	public async transact(trackable: T, quantity: number): Promise<T>{
+	public async transact(trackable: T, quantity: number, price: number): Promise<T>{
 		const transaction: Transaction = {
 			quantity: quantity,
 			date: new Date(Date.now()),
-			uid: (await this.authenticator.getCurrentUser())!.uid
+			uid: (await this.authenticator.getCurrentUser())!.uid,
+			price: price
 		}
 
 		trackable.availableQuantity += transaction.quantity;

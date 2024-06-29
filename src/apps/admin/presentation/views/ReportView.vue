@@ -25,75 +25,14 @@ export default defineComponent({
 
         <div class="px-6 py-8">
 
-            <h1 class="text-2xl">Inventory</h1>
-            <table class="w-full mt-5 text-left border-collapse bg-light ">
-                <thead class="border-b">
-                  <tr>
-                    <th
-                      class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-red-800"
-                    >
-                      Item
-                    </th>
-                    <th
-                      class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-red-800"
-                    >
-                      Remaining Quantity
-                    </th>
-                    <th
-                      class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-red-800"
-                    >
-                      Re-fill(week)
-                    </th>
-                    <th
-                      class="px-5 text-right py-3 text-sm font-medium text-gray-100 uppercase bg-red-800"
-                    >
-                      Usage(week)
-                    </th>
-                    <th
-                      class="px-5 text-right py-3 text-sm font-medium text-gray-100 uppercase bg-red-800"
-                    >
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="(item, index) in state.inventoryItems!"
-                    :key="index"
-                    class="hover:bg-gray-200"
-                  >
-                    <td class="px-6 py-4 text-lg text-gray-700 border-b">
-                      {{ item.name }}
-                    </td>
-                    <td class="px-6 py-4 text-gray-500 border-b">
-                      {{ MathUtils.round(item.availableQuantity, 2) }} {{ item.unit }}
-                    </td>
-                    <td class="px-6 py-4 text-gray-500 border-b">
-                        {{ MathUtils.round(item.weeklyDeposit, 2) }} {{ item.unit }}
-                      </td>
-                    <td
-                      class="px-6 py-4 text-sm text-dark text-right font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap"
-                    >
-                     {{ MathUtils.round(item.weeklyWithdrawal, 2) }} {{ item.unit }}
-                    </td>
-                    <td
-                      class="px-6 py-4 text-sm text-dark text-right font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap"
-                    >
-                     <RouterLink :to="`/admin/inventory/track?id=${item.id}`">
-                        <BaseButton>TRACK</BaseButton>
-                     </RouterLink>
-                    </td>
-                  </tr>
-                </tbody>
-            </table>
-
-            <h1 class="text-2xl mt-24">Products</h1>
+            <h1 class="text-2xl mt-24">Items</h1>
             <table class="w-full mt-5 text-left border-collapse bg-light ">
                 <thead class="border-b">
                   <tr>
                     <th
                       class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800"
                     >
-                      Product
+                      Items
                     </th>
                     <th
                       class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800"
@@ -118,28 +57,28 @@ export default defineComponent({
                 </thead>
                 <tbody>
                   <tr
-                    v-for="(product, index) in state.products!"
+                    v-for="(item, index) in state.inventoryItems!"
                     :key="index"
                     class="hover:bg-gray-200"
                   >
                     <td class="px-6 py-4 text-lg text-gray-700 border-b">
-                      {{ product.name }}
+                      {{ item.name }}
                     </td>
                     <td class="px-6 py-4 text-gray-500 border-b">
-                      {{ product.availableQuantity }}
+                      {{ item.availableQuantity }}
                     </td>
                     <td class="px-6 py-4 text-gray-500 border-b">
-                        {{ product.weeklyDeposit }}
+                        {{ item.weeklyDeposit }}
                       </td>
                     <td
                       class="px-6 py-4 text-gray-500 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap"
                     >
-                      {{ product.weeklyWithdrawal }}
+                      {{ item.weeklyWithdrawal }}
                     </td>
                     <td
                       class="px-6 py-4 text-sm text-dark text-right font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap"
                     >
-                     <RouterLink :to="`/admin/product/track?id=${product.id}`">
+                     <RouterLink :to="`/admin/inventory/track?id=${item.id}`">
                         <BaseButton>TRACK</BaseButton>
                      </RouterLink>
                     </td>

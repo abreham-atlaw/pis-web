@@ -1,10 +1,10 @@
-import type InventoryItem from "../models/inventoryItem";
+import type Item from "../models/inventoryItem";
 import InventoryItemSerializer from "../serializers/inventoryItemSerializer";
 import TrackableRepository from "./trackableRepository";
 
 
 
-export default class InventoryItemRepository extends TrackableRepository<InventoryItem>{
+export default class InventoryItemRepository extends TrackableRepository<Item>{
     
     constructor(){
         super(

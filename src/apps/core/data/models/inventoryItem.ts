@@ -1,7 +1,7 @@
 import Trackable, { type Transaction } from "./trackable";
 
 
-export default class InventoryItem extends Trackable{
+export default class Item extends Trackable{
     unit: string;
 
     constructor({
@@ -9,15 +9,17 @@ export default class InventoryItem extends Trackable{
         name,
         availableQuantity,
         transactions,
-        unit
+        unit,
+        price
     }: {
         id?: string,
         name: string,
         availableQuantity?: number,
         transactions?: Transaction[],
-        unit: string
+        unit: string,
+        price: number
     }) {
-        super({id, name, availableQuantity, transactions});
+        super({id, name, price, availableQuantity, transactions});
         this.unit = unit;
     }
 }

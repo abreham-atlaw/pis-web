@@ -1,11 +1,11 @@
 import { AsyncState } from "@/common/state/baseState";
 import SellForm from "../forms/sellForm";
-import type Product from "@/apps/core/data/models/product";
+import type Item from "@/apps/core/data/models/inventoryItem";
 
 
 export default class SellState extends AsyncState{
 
     forms: SellForm[] = [new SellForm()];
-    products?: Product[];
+    items?: Item[];
 
 }
