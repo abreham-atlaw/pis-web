@@ -1,13 +1,13 @@
-import type Item from "@/apps/core/data/models/inventoryItem";
+import type InventoryItem from "@/apps/core/data/models/inventoryItem";
 import BaseState from "@/common/state/baseState";
 
 
 export default class DashboardState extends BaseState{
 
-    items?: Item[];
+    items?: InventoryItem[];
 
-    lowInventoryItems?: Item[];
-    topItems?: Item[];
+    lowInventoryItems?: InventoryItem[];
+    topItems?: InventoryItem[];
 
     weeklySales?: number;
     totalSales?: number;

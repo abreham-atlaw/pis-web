@@ -1,11 +1,11 @@
-import type Item from "@/apps/core/data/models/inventoryItem";
+import type InventoryItem from "@/apps/core/data/models/inventoryItem";
 import Field from "@/common/forms/fields";
 import Form from "@/common/forms/form";
 
 
 export default class SellForm extends Form{
 
-    item = new Field<Item>();
+    item = new Field<InventoryItem>();
     quantity = new Field<number>(
         true,
         (value: number) => {

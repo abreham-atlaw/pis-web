@@ -16,16 +16,16 @@ export default class DashboardViewModel extends AsyncViewModel<DashboardState>{
         ).slice(0, 5)
 
         this.state.topItems = this.state.items.sort(
-            (product1, product2) => product2.weeklyWithdrawal - product1.weeklyWithdrawal
+            (item1, item2) => item2.weeklyWithdrawal - item1.weeklyWithdrawal
         )
 
         this.state.weeklySales = this.state.items.reduce(
-            (sum, product) => sum + product.weeklyWithdrawal,
+            (sum, item) => sum + item.weeklyWithdrawal,
             0
         );
 
         this.state.totalSales = this.state.items.reduce(
-            (sum, product) => sum + product.totalWithdrawal,
+            (sum, item) => sum + item.totalWithdrawal,
             0
         )
 

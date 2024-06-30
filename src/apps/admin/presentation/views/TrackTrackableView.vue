@@ -1,17 +1,17 @@
 <script lang="ts">
 import ModelDetailState from '@/common/state/modelDetailState';
 import { ref, defineComponent } from 'vue';
-import TrackTrackableViewModel from '../../application/viewModels/trackTrackableViewModel';
+import TrackInventoryItemViewModel from '../../application/viewModels/trackInventoryItemViewModel';
 import ViewModelView from '@/common/components/views/ViewModelView.vue';
-import Trackable from '@/apps/core/data/models/trackable';
-import TrackableRepository from '@/apps/core/data/repositories/trackableRepository';
 import Role from '@/apps/auth/data/models/role';
+import InventoryItemRepository from '@/apps/core/data/repositories/inventoryItemRepository';
+import type InventoryItem from '@/apps/core/data/models/inventoryItem';
 
 export default defineComponent({
 
     props: {
         repository: {
-            type: TrackableRepository,
+            type: InventoryItemRepository,
             required: true
         },
         modeMap: {
@@ -21,10 +21,10 @@ export default defineComponent({
     },
 
     data() {
-        let state = ref(new ModelDetailState<Trackable>(this.$route.query.id as string));
+        let state = ref(new ModelDetailState<InventoryItem>(this.$route.query.id as string));
         return {
             state,
-            viewModel: new TrackTrackableViewModel(state.value as ModelDetailState<Trackable>, this.repository),
+            viewModel: new TrackInventoryItemViewModel(state.value as ModelDetailState<InventoryItem>, this.repository),
             Role
         };
     },

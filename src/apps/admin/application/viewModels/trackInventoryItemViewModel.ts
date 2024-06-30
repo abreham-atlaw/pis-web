@@ -1,11 +1,11 @@
 import AdminRepository from "@/apps/auth/data/repositories/adminRepository";
 import CashierRepository from "@/apps/auth/data/repositories/cashierRepository";
-import type Trackable from "@/apps/core/data/models/trackable";
+import type InventoryItem from "@/apps/core/data/models/inventoryItem";
 import ModelDetailViewModel from "@/common/viewmodel/modelDetailVIewModel";
 
 
 
-export default class TrackTrackableViewModel<T extends Trackable> extends ModelDetailViewModel<T>{
+export default class TrackInventoryItemViewModel<T extends InventoryItem> extends ModelDetailViewModel<T>{
 
     private adminRepository = new AdminRepository();
     private cashierRepository = new CashierRepository();

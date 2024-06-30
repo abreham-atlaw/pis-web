@@ -1,7 +1,7 @@
 import Serializer from "@/common/serializers/serializer";
-import type { Transaction } from "../models/trackable";
 import type { DocumentData } from "firebase/firestore";
 import { DateSerializer } from "@/common/serializers/fieldSerializers";
+import Transaction from "../models/transaction";
 
 
 export default class TransactionSerializer extends Serializer<Transaction, DocumentData>{
@@ -10,19 +10,25 @@ export default class TransactionSerializer extends Serializer<Transaction, Docum
 
     serialize(instance: Transaction): DocumentData {
         return {
+            id: instance.id,
             quantity: instance.quantity,
             date: this.dateSerializer.serialize(instance.date),
             uid: instance.uid,
-            price: instance.price
+            price: instance.price,
+            source: instance.source ?? null,
+            expiryDate: (instance.expiryDate == null) ? null : this.dateSerializer.serialize(instance.expiryDate)
         }
     }
     deserialize(data: DocumentData): Transaction {
-        return {
+        return new Transaction({
+            id: data.id,
             quantity: data.quantity,
             date: this.dateSerializer.deserialize(data.date),
             uid: data.uid,
-            price: data.price
-        }
+            price: data.price,
+            source: data.source ?? undefined,
+            expiryDate: (data.expiryDate == null) ? undefined : this.dateSerializer.deserialize(data.expiryDate),
+        })
     }
 
 

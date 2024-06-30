@@ -1,7 +1,7 @@
 <script lang="ts">
 import { ref, defineComponent } from 'vue';
-import TransactTrackableState from '../../application/states/transactTrackableState';
-import TransactTrackableViewModel from '../../application/viewModels/transactTrackableViewModel';
+import TransactInventoryItemState from '../../application/states/transactInventoryItemState';
+import TransactInventoryItemViewModel from '../../application/viewModels/transactInventoryItemViewModel';
 import InventoryItemRepository from '@/apps/core/data/repositories/inventoryItemRepository';
 import ViewModelView from '@/common/components/views/ViewModelView.vue';
 import BooleanFieldComponentVue from '@/common/components/form/BooleanFieldComponent.vue';
@@ -11,14 +11,15 @@ import AsyncButton from '@/common/components/buttons/AsyncButton.vue';
 import BaseButton from '@/common/components/buttons/BaseButton.vue';
 import { AsyncStatus } from '@/common/state/baseState';
 import InventoryItem from '@/apps/core/data/models/inventoryItem';
+import DateFieldComponent from '@/common/components/form/DateFieldComponent.vue';
 
 
 export default defineComponent({
     data() {
-        let state = ref(new TransactTrackableState(this.$route.query.id as string));
+        let state = ref(new TransactInventoryItemState(this.$route.query.id as string));
         return {
             state,
-            viewModel: new TransactTrackableViewModel(state.value as any, new InventoryItemRepository()),
+            viewModel: new TransactInventoryItemViewModel(state.value as any),
             InventoryItem
         };
     },
@@ -34,7 +35,7 @@ export default defineComponent({
     },
     watch: {
         state: {
-            handler(newValue: TransactTrackableState){
+            handler(newValue: TransactInventoryItemState){
                 if(newValue.status === AsyncStatus.done){
                     this.$router.push("/admin/inventory/list");
                 }
@@ -42,7 +43,7 @@ export default defineComponent({
             deep: true
         }
     },
-    components: { ViewModelView, BooleanFieldComponentVue, LabeledFieldComponentVue, TextFieldComponent, AsyncButton, BaseButton }
+    components: { ViewModelView, BooleanFieldComponentVue, LabeledFieldComponentVue, TextFieldComponent, AsyncButton, BaseButton, DateFieldComponent }
 })
 </script>
 <template>
@@ -50,7 +51,7 @@ export default defineComponent({
 
         <div class="backdrop-blur-xl mr-auto m-10 p-16 rounded-2xl w-1/2">
 
-            <h1 class="text-2xl font-extrabold">Inventory Transaction ( {{ state.trackable!.name }} )</h1>
+            <h1 class="text-2xl font-extrabold">Inventory Transaction ( {{ state.inventoryItem!.name }} )</h1>
 
             <form @submit.prevent="submit" class="mt-10">
 
@@ -61,13 +62,20 @@ export default defineComponent({
                 <LabeledFieldComponentVue label="Price" class="mt-10">
                     <TextFieldComponent type="number" :field="(state.form.price as any)" :prepare-input="(value: string) => {return Number.parseInt(value)}"/>
                 </LabeledFieldComponentVue>
+                <LabeledFieldComponentVue label="Source" class="mt-10">
+                    <TextFieldComponent type="text" :field="state.form.source"/>
+                </LabeledFieldComponentVue>
+                <LabeledFieldComponentVue label="Expiry Date" class="mt-10">
+                    <DateFieldComponent :field="state.form.expiryDate"/>
+                </LabeledFieldComponentVue>
                 <LabeledFieldComponentVue label="Dispose" class="mt-10">
                     <BooleanFieldComponentVue :field="state.form.disposal"/>
                 </LabeledFieldComponentVue>
 
 
+
                 <div class="mt-5">
-                    Remaining Amount: {{ remaining }} {{ (state.trackable as InventoryItem).unit }}
+                    Remaining Amount: {{ remaining }} {{ (state.inventoryItem as InventoryItem).unit }}
                 </div>
 
                 <div class="w-full mt-10 flex">

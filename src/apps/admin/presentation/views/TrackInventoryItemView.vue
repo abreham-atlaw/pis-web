@@ -1,7 +1,7 @@
 <script lang="ts">
 import InventoryItemRepository from '@/apps/core/data/repositories/inventoryItemRepository';
 import { defineComponent } from 'vue';
-import TrackTrackableView from './TrackTrackableView.vue';
+import TrackInventoryItemView from './TrackTrackableView.vue';
 
 
 export default defineComponent({
@@ -10,11 +10,11 @@ export default defineComponent({
             repository: new InventoryItemRepository()
         };
     },
-    components: { TrackTrackableView }
+    components: { TrackInventoryItemView }
 })
 </script>
 <template>
 
-    <TrackTrackableView :repository="(repository as any)" :mode-map="(quantity: number) => (quantity > 0) ? 'REFILL' : 'WITHDRAW'"/>
+    <TrackInventoryItemView :repository="(repository as any)" :mode-map="(quantity: number) => (quantity > 0) ? 'REFILL' : 'WITHDRAW'"/>
 
 </template>

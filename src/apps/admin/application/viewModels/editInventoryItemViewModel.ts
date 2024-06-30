@@ -1,32 +1,35 @@
 import EditModelViewModel from "@/common/viewmodel/editModelViewModel";
 import type InventoryItemForm from "../forms/inventoryItemForm";
-import Item from "@/apps/core/data/models/inventoryItem";
+import InventoryItem from "@/apps/core/data/models/inventoryItem";
 import type { FireStoreRepository } from "@/common/repositories/firestoreRepository";
 import InventoryItemRepository from "@/apps/core/data/repositories/inventoryItemRepository";
 
 
 
-export default class EditInventoryItemViewModel extends EditModelViewModel<Item, InventoryItemForm>{
+export default class EditInventoryItemViewModel extends EditModelViewModel<InventoryItem, InventoryItemForm>{
     
-    protected syncFormToModel(form: InventoryItemForm, model: Item): void {
+    protected syncFormToModel(form: InventoryItemForm, model: InventoryItem): void {
         model.name = form.name.getValue()!;
         model.unit = form.unit.getValue()!;
-        model.price = form.price.getValue()!;
+        model.unitQuantity = form.unitQuantity.getValue()!;
+        model.price = form.price.getValue()! / model.unitQuantity;
     }
-    protected syncModelToForm(model: Item, form: InventoryItemForm): void {
+    protected syncModelToForm(model: InventoryItem, form: InventoryItemForm): void {
         form.name.value = model.name;
         form.unit.value = model.unit;
-        form.price.value = model.price;
+        form.unitQuantity.value = model.unitQuantity;
+        form.price.value = model.price * model.unitQuantity;
     }
-    protected initRepository(): FireStoreRepository<string, Item> {
+    protected initRepository(): FireStoreRepository<string, InventoryItem> {
         return new InventoryItemRepository();
 
     }
-    protected createInstance(): Item {
-        return new Item({
+    protected createInstance(): InventoryItem {
+        return new InventoryItem({
             name: "",
-            unit: "qty",
-            price: 0
+            unit: "pk",
+            price: 0,
+            unitQuantity: 0
         })
     }
 

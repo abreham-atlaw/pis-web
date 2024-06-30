@@ -15,6 +15,7 @@
 import type Item from '@/apps/core/data/models/inventoryItem';
 import { defineComponent, ref } from 'vue';
 import Field from '@/common/forms/fields';
+import type InventoryItem from '@/apps/core/data/models/inventoryItem';
 
 export default defineComponent({
     props:{
@@ -25,6 +26,10 @@ export default defineComponent({
         items: {
             type: Array<Item>,
             required: true
+        },
+        onItemSelected: {
+            type: Function,
+            default: null
         }
     },
     data() {
@@ -42,6 +47,9 @@ export default defineComponent({
         onSelect(item: Item){
             this.field.setValue(item);
             this.selectedItem = item;
+            if(this.onItemSelected != null){
+                this.onItemSelected!(item);
+            }
         }
     },
     watch: {

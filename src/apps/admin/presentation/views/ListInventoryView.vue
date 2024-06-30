@@ -43,7 +43,7 @@ export default defineComponent({
                     <th
                         class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800"
                     >
-                        Remaining
+                        Remaining(Unit)
                     </th>
                     <th
                         class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800"
@@ -54,6 +54,11 @@ export default defineComponent({
                         class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800"
                     >
                         Price
+                    </th>
+                    <th
+                    class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800"
+                    >
+                        Price(Unit)
                     </th>
                     <th
                         class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800"
@@ -71,13 +76,16 @@ export default defineComponent({
                         {{ item.name }}
                     </td>
                     <td class="px-6 py-4 border-b">
-                        {{  MathUtils.round(item.availableQuantity, 2) }}
+                        {{  MathUtils.round(item.pkAvailableQuantity, 2) }}
                     </td>
                     <td class="px-6 py-4 border-b">
                         {{  item.unit }}
                     </td>
                     <td class="px-6 py-4 border-b">
                         {{  item.price }}
+                    </td>
+                    <td class="px-6 py-4 border-b">
+                        {{  item.pkPrice }}
                     </td>
                     <td
                         class="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap"
