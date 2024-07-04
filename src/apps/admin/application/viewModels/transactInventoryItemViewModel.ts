@@ -1,5 +1,4 @@
 import AsyncViewModel from "@/common/viewmodel/asyncViewModel";
-import type InventoryItem from "@/apps/core/data/models/inventoryItem";
 import InventoryItemRepository from "@/apps/core/data/repositories/inventoryItemRepository";
 import type TransactInventoryItemState from "../states/transactInventoryItemState";
 
@@ -26,19 +25,20 @@ export default class TransactInventoryItemViewModel extends AsyncViewModel<Trans
         return (this.state.inventoryItem!.availableQuantity + this.getIncrement()) / this.state.inventoryItem!.unitQuantity;
     }
 
-    public async save(){
+    public async save() {
         await this.asyncCall(
             async () => {
                 await this.state.form.validate(true);
-                await this.repository.transact(
-                    this.state.inventoryItem!, 
-                    this.getIncrement(), 
-                    this.state.form.price.getValue()! / this.state.inventoryItem.unitQuantity, 
-                    this.state.form.source.getValue()!,
-                    this.state.form.expiryDate.getValue()!
-                );
+                await this.repository.transact({
+                    inventoryItem: this.state.inventoryItem!,
+                    quantity: this.getIncrement(),
+                    price: this.state.form.price.getValue()! / this.state.inventoryItem.unitQuantity,
+                    source: this.state.form.source.getValue()!,
+                    expiryDate: this.state.form.expiryDate.getValue()!,
+                    batchNumber: this.state.form.batchNumber.getValue()!,
+                });
             }
-        )
+        );
     }
 
 }

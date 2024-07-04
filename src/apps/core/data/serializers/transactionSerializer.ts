@@ -16,7 +16,9 @@ export default class TransactionSerializer extends Serializer<Transaction, Docum
             uid: instance.uid,
             price: instance.price,
             source: instance.source ?? null,
-            expiryDate: (instance.expiryDate == null) ? null : this.dateSerializer.serialize(instance.expiryDate)
+            expiryDate: (instance.expiryDate == null) ? null : this.dateSerializer.serialize(instance.expiryDate),
+            batch_number: instance.batchNumber ?? null,
+            payment_method: instance.paymentMethod ?? null
         }
     }
     deserialize(data: DocumentData): Transaction {
@@ -28,6 +30,8 @@ export default class TransactionSerializer extends Serializer<Transaction, Docum
             price: data.price,
             source: data.source ?? undefined,
             expiryDate: (data.expiryDate == null) ? undefined : this.dateSerializer.deserialize(data.expiryDate),
+            batchNumber: data.batch_number ?? undefined,
+            paymentMethod: data.payment_method ?? undefined
         })
     }
 

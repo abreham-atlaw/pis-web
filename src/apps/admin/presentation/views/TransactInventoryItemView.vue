@@ -54,9 +54,11 @@ export default defineComponent({
             <h1 class="text-2xl font-extrabold">Inventory Transaction ( {{ state.inventoryItem!.name }} )</h1>
 
             <form @submit.prevent="submit" class="mt-10">
-
-
-                <LabeledFieldComponentVue label="Quantity">
+                
+                <LabeledFieldComponentVue label="Batch Number" class="mt-10">
+                    <TextFieldComponent type="text" :field="state.form.batchNumber"/>
+                </LabeledFieldComponentVue>
+                <LabeledFieldComponentVue label="Quantity" class="mt-10">
                     <TextFieldComponent :field="(state.form.quantity as any)" type="number" :prepare-input="(value: string) => {return Number.parseFloat(value)}"/>
                 </LabeledFieldComponentVue>
                 <LabeledFieldComponentVue label="Price" class="mt-10">

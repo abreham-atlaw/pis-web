@@ -38,6 +38,11 @@ export default defineComponent({
                     <th
                         class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800"
                     >
+                        ID
+                    </th>
+                    <th
+                        class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800"
+                    >
                         Item Name
                     </th>
                     <th
@@ -73,6 +78,9 @@ export default defineComponent({
                     class="hover:bg-grey hover:bg-opacity-40"
                     >
                     <td class="px-6 py-4 text-lg border-b">
+                        {{ item.id }}
+                    </td>
+                    <td class="px-6 py-4 text-lg border-b">
                         {{ item.name }}
                     </td>
                     <td class="px-6 py-4 border-b">
@@ -82,7 +90,7 @@ export default defineComponent({
                         {{  item.unit }}
                     </td>
                     <td class="px-6 py-4 border-b">
-                        {{  item.price }}
+                        {{  item.price.toFixed(2) }}
                     </td>
                     <td class="px-6 py-4 border-b">
                         {{  item.pkPrice }}

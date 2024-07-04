@@ -1,4 +1,5 @@
 import type InventoryItem from "@/apps/core/data/models/inventoryItem";
+import PaymentMethod from "@/apps/core/data/models/paymentMethod";
 import Field from "@/common/forms/fields";
 import Form from "@/common/forms/form";
 
@@ -16,12 +17,14 @@ export default class SellForm extends Form{
         }
     );
     price = new Field<number>();
+    paymentMethod = new Field<PaymentMethod>();
 
     getFields(): Field<any>[] {
         return [
             this.item,
             this.quantity,
-            this.price
+            this.price,
+            this.paymentMethod
         ]
     }
 }

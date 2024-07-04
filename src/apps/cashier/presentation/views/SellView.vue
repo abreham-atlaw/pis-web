@@ -9,7 +9,7 @@ import TextFieldComponent from '@/common/components/form/TextFieldComponent.vue'
 import AsyncButton from '@/common/components/buttons/AsyncButton.vue';
 import type InventoryItem from '@/apps/core/data/models/inventoryItem';
 import type SellForm from '../../application/forms/sellForm';
-
+import PaymentMethodChoiceField from '../components/PaymentMethodChoiceField.vue';
 
 export default defineComponent({
     data() {
@@ -33,7 +33,7 @@ export default defineComponent({
             form.price.setValue(item.price);
         }
     },
-    components: { ViewModelView, ItemChoiceField, LabeledFieldComponent, TextFieldComponent, AsyncButton }
+    components: { ViewModelView, ItemChoiceField, LabeledFieldComponent, TextFieldComponent, AsyncButton, PaymentMethodChoiceField }
 })
 
 </script>
@@ -63,6 +63,10 @@ export default defineComponent({
                         </LabeledFieldComponent>
                         <LabeledFieldComponent label="Price" class="mt-10">
                             <TextFieldComponent type="number" :field="(form.price as any)" :prepare-input="(value: string) => {return Number.parseInt(value)}"/>
+                        </LabeledFieldComponent>
+                        <LabeledFieldComponent label="Payment Method" class="mt-10">
+                            <PaymentMethodChoiceField 
+                            :field="form.paymentMethod as any"/>
                         </LabeledFieldComponent>
                         
                         <div class="mt-5">

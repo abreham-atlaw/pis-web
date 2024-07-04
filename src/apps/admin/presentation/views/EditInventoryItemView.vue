@@ -45,8 +45,10 @@ export default defineComponent({
 
             <form @submit.prevent="submit" class="mt-10">
 
-
-                <LabeledFieldComponent label="Name">
+                <LabeledFieldComponent label="ID">
+                    <TextFieldComponent :field="state.form.id"/>
+                </LabeledFieldComponent>
+                <LabeledFieldComponent label="Name" class="mt-10">
                     <TextFieldComponent :field="state.form.name"/>
                 </LabeledFieldComponent>
                 <LabeledFieldComponent label="Unit" class="mt-10">

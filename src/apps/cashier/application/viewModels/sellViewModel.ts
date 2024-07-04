@@ -16,7 +16,12 @@ export default class SellViewModel extends AsyncViewModel<SellState>{
     }
 
     private async transactForm(form: SellForm){
-        await this.repository.transact(form.item.getValue()!, -form.quantity.getValue()!, form.price.getValue()!);
+        await this.repository.transact({
+            inventoryItem:form.item.getValue()!, 
+            quantity: -form.quantity.getValue()!,
+            price: form.price.getValue()!, 
+            paymentMethod: form.paymentMethod.getValue()!
+        });
     }
 
     addForm(){

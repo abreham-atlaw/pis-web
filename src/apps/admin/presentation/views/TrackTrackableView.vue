@@ -6,6 +6,7 @@ import ViewModelView from '@/common/components/views/ViewModelView.vue';
 import Role from '@/apps/auth/data/models/role';
 import InventoryItemRepository from '@/apps/core/data/repositories/inventoryItemRepository';
 import type InventoryItem from '@/apps/core/data/models/inventoryItem';
+import PaymentMethod from '@/apps/core/data/models/paymentMethod';
 
 export default defineComponent({
 
@@ -25,7 +26,8 @@ export default defineComponent({
         return {
             state,
             viewModel: new TrackInventoryItemViewModel(state.value as ModelDetailState<InventoryItem>, this.repository),
-            Role
+            Role,
+            PaymentMethod
         };
     },
     components: { ViewModelView }
@@ -52,6 +54,11 @@ export default defineComponent({
                         class="px-6 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800"
                     >
                         Price
+                    </th>
+                    <th
+                        class="px-6 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800"
+                    >
+                        Payment Method
                     </th>
                     <th
                         class="px-6 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800"
@@ -85,7 +92,10 @@ export default defineComponent({
                         {{ Math.abs(transaction.quantity) }}
                     </td>
                     <td class="px-6 py-4 text-lg border-b">
-                        {{ transaction.price }}
+                        {{ transaction.price.toFixed(2) }}
+                    </td>
+                    <td class="px-6 py-4 text-lg border-b">
+                        {{ (transaction.paymentMethod == null) ? "None" : PaymentMethod[transaction.paymentMethod].toUpperCase() }}
                     </td>
                     <td class="px-6 py-4 border-b">
                         {{  transaction.date.toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) }}
