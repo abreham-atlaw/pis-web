@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginViewVue from '@/apps/auth/presentation/views/LoginView.vue'
 import DashboardBaseViewVue from '@/apps/admin/presentation/views/BaseDashboardView.vue'
 import EditInventoryItemViewVue from '@/apps/admin/presentation/views/EditInventoryItemView.vue'
+import CSVImportView from '@/apps/admin/presentation/views/CSVImportView.vue'
 import ListInventoryViewVue from '@/apps/admin/presentation/views/ListInventoryView.vue'
 import TransactInventoryItemViewVue from '@/apps/admin/presentation/views/TransactInventoryItemView.vue'
 import CashierViewVue from '@/apps/cashier/presentation/views/CashierView.vue'
@@ -59,6 +60,11 @@ const router = createRouter({
           path: "report",
           name: "Report",
           component: ReportViewVue
+        },
+        {
+          path: "import",
+          name: "Import",
+          component: CSVImportView
         }
       ]
     },

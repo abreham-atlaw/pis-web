@@ -1,9 +1,10 @@
 import { FireStoreRepository } from "@/common/repositories/firestoreRepository";
 import Authenticator from "@/apps/auth/data/repositories/authenticator";
-import type InventoryItem from "../models/inventoryItem";
+import InventoryItem from "../models/inventoryItem";
 import InventoryItemSerializer from "../serializers/inventoryItemSerializer";
 import Transaction from "../models/transaction";
-import type PaymentMethod from "../models/paymentMethod";
+import PaymentMethod from "../models/paymentMethod";
+import Papa from "papaparse";
 
 
 export default class InventoryItemRepository extends FireStoreRepository<string, InventoryItem> {
@@ -25,13 +26,7 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
     }
 
     public async transact({
-        inventoryItem,
-        quantity,
-        price,
-        source = undefined,
-        expiryDate = undefined,
-        batchNumber = undefined,
-        paymentMethod = undefined
+        inventoryItem, quantity, price, source = undefined, expiryDate = undefined, batchNumber = undefined, paymentMethod = undefined
     }: {
         inventoryItem: InventoryItem,
         quantity: number,
@@ -61,4 +56,84 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         await this.save(inventoryItem);
         return inventoryItem;
     }
+
+    private parseDate(dateString: string): Date {
+        const monthMap: { [key: string]: number } = {
+            'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+            'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+        };
+        const [yearPart, monthPart] = dateString.split('-');
+        const year = 2000 + parseInt(yearPart);
+        const month = monthMap[monthPart];
+        return new Date(year, month, 1);
+    }
+
+
+    public async importFromCSV(file: File, progressUpdater: (length: Number, items: InventoryItem[], failedItems: string[]) => void): Promise<void> {
+        return new Promise((resolve, reject) => {
+            Papa.parse(file, {
+                header: true,
+                skipEmptyLines: true,
+                complete: async (results) => {
+                    try {
+                        const items = [];
+                        const failedItems = [];
+                        for (const row of results.data) {
+                            try{
+                                const inventoryItem = await this.createFromRow(row);
+                                await this.transactItemFromRow(inventoryItem, row);
+                                items.push(inventoryItem);
+                            }
+                            catch(ex){
+                                failedItems.push(row["id"])
+                            }
+                            
+                            progressUpdater(results.data.length, items, failedItems);
+                        }
+                        resolve();
+                    } catch (error) {
+                        reject(error);
+                    }
+                },
+                error: (error) => {
+                    reject(error);
+                }
+
+            });
+        });
+    }
+
+    private async transactItemFromRow(inventoryItem: InventoryItem, row: any): Promise<void>{
+        await this.transact({
+            inventoryItem: inventoryItem,
+            quantity: parseInt(row["quantity"]),
+            price: parseFloat(row["unit_price"]),
+            source: row["source"],
+            expiryDate: this.parseDate(row["expiry_date"]),
+            paymentMethod: PaymentMethod.cash,
+            batchNumber: row["batch_no"]
+        })
+    }
+
+    private async createFromRow(row: any): Promise<InventoryItem> {
+
+        try{
+            const dbItem = await this.getByPrimaryKey(row["id"]);
+            return dbItem;
+        } catch(ex){ /* empty */ }
+
+        const item = new InventoryItem({
+            id: row["id"],
+            name: row["name"],
+            price: parseFloat(row["price"]),
+            unit: row["unit"],
+            unitQuantity: parseFloat(row["unit_quantity"]),
+            availableQuantity: 0,
+            transactions: []
+        });
+
+        await this.create(item);
+        return item;
+    }
+
 }
