@@ -1,5 +1,6 @@
 import { CollectionReference, type DocumentData, QueryDocumentSnapshot, 
-	doc, getDocs, query, setDoc, where } from "firebase/firestore"
+	doc, getDocs, query, setDoc, where, 
+	deleteDoc} from "firebase/firestore"
 import { collection, addDoc } from "firebase/firestore"; 
 import type Model from "@/common/models/model";
 import { InstanceNotFoundException, MultipleInstancesFoundException, type Repository } from "./repository";
@@ -139,6 +140,11 @@ export abstract class FireStoreRepository<P, M extends Model<P>> implements Repo
 			await this.create(instance);
 
 		}
+	}
+
+	public async delete(instance: M){
+		const document = await this.getDocument(instance.getPK()!);
+		await deleteDoc(doc(this.collection, document.id));
 	}
 
 	public async getAll(): Promise<M[]> {

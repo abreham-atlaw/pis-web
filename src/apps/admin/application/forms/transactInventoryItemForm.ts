@@ -11,6 +11,7 @@ export default class TransactInventoryItemForm extends Form{
     source = new TextField();
     expiryDate = new Field<Date>();
     batchNumber = new TextField();
+    invoiceId = new TextField();
 
     getFields(): Field<any>[] {
         return [
@@ -19,7 +20,8 @@ export default class TransactInventoryItemForm extends Form{
             this.price,
             this.source,
             this.expiryDate,
-            this.batchNumber
+            this.batchNumber,
+            this.invoiceId
         ]
     }
 

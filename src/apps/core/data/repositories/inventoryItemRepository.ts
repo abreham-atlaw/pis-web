@@ -5,6 +5,9 @@ import InventoryItemSerializer from "../serializers/inventoryItemSerializer";
 import Transaction from "../models/transaction";
 import PaymentMethod from "../models/paymentMethod";
 import Papa from "papaparse";
+import PurchaseType from "../models/purchaseType";
+import Category from "../models/category";
+import { invalidateTypeCache } from "vue/compiler-sfc";
 
 
 export default class InventoryItemRepository extends FireStoreRepository<string, InventoryItem> {
@@ -26,7 +29,15 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
     }
 
     public async transact({
-        inventoryItem, quantity, price, source = undefined, expiryDate = undefined, batchNumber = undefined, paymentMethod = undefined
+        inventoryItem, 
+        quantity, 
+        price, 
+        source = undefined, 
+        expiryDate = undefined, 
+        batchNumber = undefined, 
+        paymentMethod = undefined,
+        purchaseType = PurchaseType.cash,
+        invoiceId = undefined
     }: {
         inventoryItem: InventoryItem,
         quantity: number,
@@ -34,7 +45,9 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         source?: string,
         expiryDate?: Date,
         batchNumber?: string,
-        paymentMethod?: PaymentMethod
+        paymentMethod?: PaymentMethod,
+        purchaseType?: PurchaseType,
+        invoiceId?: string
     }): Promise<InventoryItem> {
         const transaction: Transaction = new Transaction({
             id: this.generateId(inventoryItem, source),
@@ -45,13 +58,14 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
             source: source,
             expiryDate: expiryDate,
             batchNumber: batchNumber,
-            paymentMethod: paymentMethod
+            paymentMethod: paymentMethod,
+            purchaseType: purchaseType,
+            invoiceId: invoiceId
         });
 
 
         inventoryItem.availableQuantity += transaction.quantity;
     
-        inventoryItem.availableQuantity += transaction.quantity;
         inventoryItem.transactions.push(transaction);
         await this.save(inventoryItem);
         return inventoryItem;
@@ -103,6 +117,10 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         });
     }
 
+    private getPurchaseType(typeString: string): PurchaseType{
+        return (typeString === "CASH")?PurchaseType.cash:PurchaseType.credit;
+    }
+
     private async transactItemFromRow(inventoryItem: InventoryItem, row: any): Promise<void>{
         await this.transact({
             inventoryItem: inventoryItem,
@@ -111,7 +129,8 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
             source: row["source"],
             expiryDate: this.parseDate(row["expiry_date"]),
             paymentMethod: PaymentMethod.cash,
-            batchNumber: row["batch_no"]
+            batchNumber: row["batch_no"],
+            purchaseType: this.getPurchaseType(row["purchase_type"])
         })
     }
 
@@ -129,6 +148,7 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
             unit: row["unit"],
             unitQuantity: parseFloat(row["unit_quantity"]),
             availableQuantity: 0,
+            category: row["category"] ?? Category.med,
             transactions: []
         });
 

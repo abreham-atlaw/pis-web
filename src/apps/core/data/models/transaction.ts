@@ -2,6 +2,7 @@ import type Account from "@/apps/auth/data/models/account";
 import type Model from "@/common/models/model";
 import type InventoryItem from "./inventoryItem";
 import type PaymentMethod from "./paymentMethod";
+import type PurchaseType from "./purchaseType";
 
 
 export default class Transaction {
@@ -16,6 +17,8 @@ export default class Transaction {
     expiryDate?: Date;
     batchNumber?: string;
     paymentMethod?: PaymentMethod;
+    purchaseType?: PurchaseType;
+    invoiceId?: string;
     
     inventoryItem: InventoryItem;
 
@@ -30,6 +33,8 @@ export default class Transaction {
         expiryDate,
         batchNumber,
         paymentMethod,
+        purchaseType,
+        invoiceId,
         inventoryItem
     }: {
         id: string,
@@ -42,6 +47,8 @@ export default class Transaction {
         expiryDate?: Date;
         batchNumber?: string,
         paymentMethod?: PaymentMethod,
+        purchaseType?: PurchaseType,
+        invoiceId?: string,
         inventoryItem?: InventoryItem
     }) {
         this.id = id;
@@ -54,6 +61,8 @@ export default class Transaction {
         this.expiryDate = expiryDate;
         this.batchNumber = batchNumber;
         this.paymentMethod = paymentMethod;
+        this.purchaseType = purchaseType;
+        this.invoiceId = invoiceId;
         this.inventoryItem = inventoryItem;
     }
 

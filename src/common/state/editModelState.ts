@@ -9,6 +9,7 @@ export default class EditModelState<M extends Model<string>, F extends Form> ext
     public form: F;
     public id?: string;
     public instance?: M;
+    public deleteState = new AsyncState();
 
 
     constructor(form: F, id?: string, instance?: M){
@@ -16,6 +17,10 @@ export default class EditModelState<M extends Model<string>, F extends Form> ext
         this.form = form;
         this.id = id;
         this.instance = instance;
+    }
+
+    get isEditMode(): boolean{
+        return this.id != undefined;
     }
 
 }

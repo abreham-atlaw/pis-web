@@ -36,6 +36,7 @@ export default class TransactInventoryItemViewModel extends AsyncViewModel<Trans
                     source: this.state.form.source.getValue()!,
                     expiryDate: this.state.form.expiryDate.getValue()!,
                     batchNumber: this.state.form.batchNumber.getValue()!,
+                    invoiceId: this.state.form.invoiceId.getValue()!
                 });
             }
         );

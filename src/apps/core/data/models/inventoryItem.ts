@@ -1,5 +1,6 @@
 import type Model from "@/common/models/model";
 import type Transaction from "./transaction";
+import Category from "./category";
 
 
 export default class InventoryItem implements Model<string> {
@@ -11,6 +12,7 @@ export default class InventoryItem implements Model<string> {
     transactions: Transaction[];
     unit: string;
     unitQuantity: number;
+    category: string;
 
     constructor({
         id = null,
@@ -20,6 +22,7 @@ export default class InventoryItem implements Model<string> {
         transactions = [],
         unit,
         unitQuantity = 0,
+        category = Category.med
     }: {
         id?: string | null;
         name: string;
@@ -28,6 +31,7 @@ export default class InventoryItem implements Model<string> {
         transactions?: Transaction[];
         unit: string;
         unitQuantity: number;
+        category: string
     }) {
         this.id = id;
         this.name = name;
@@ -36,6 +40,7 @@ export default class InventoryItem implements Model<string> {
         this.transactions = transactions;
         this.unit = unit;
         this.unitQuantity = unitQuantity;
+        this.category = category;
     }
 
     getPK(): string | null {

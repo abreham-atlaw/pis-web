@@ -48,4 +48,13 @@ export default abstract class EditModelViewModel<M extends Model<string>, F exte
 
     }
 
+    public async delete(){
+        await this.asyncCall(
+            async () => {
+                await this.repository.delete(this.state.instance!);
+            },
+            this.state.deleteState
+        );
+    }
+
 }

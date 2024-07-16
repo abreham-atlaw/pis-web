@@ -24,8 +24,8 @@ export default class EditInventoryItemViewModel extends EditModelViewModel<Inven
     }
     protected initRepository(): FireStoreRepository<string, InventoryItem> {
         return new InventoryItemRepository();
-
     }
+
     protected createInstance(): InventoryItem {
         return new InventoryItem({
             name: "",

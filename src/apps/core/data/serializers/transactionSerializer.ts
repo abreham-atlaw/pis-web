@@ -2,6 +2,7 @@ import Serializer from "@/common/serializers/serializer";
 import type { DocumentData } from "firebase/firestore";
 import { DateSerializer } from "@/common/serializers/fieldSerializers";
 import Transaction from "../models/transaction";
+import PurchaseType from "../models/purchaseType";
 
 
 export default class TransactionSerializer extends Serializer<Transaction, DocumentData>{
@@ -18,7 +19,9 @@ export default class TransactionSerializer extends Serializer<Transaction, Docum
             source: instance.source ?? null,
             expiryDate: (instance.expiryDate == null) ? null : this.dateSerializer.serialize(instance.expiryDate),
             batch_number: instance.batchNumber ?? null,
-            payment_method: instance.paymentMethod ?? null
+            payment_method: instance.paymentMethod ?? null,
+            purchase_type: instance.purchaseType ?? PurchaseType.cash,
+            invoice_id: instance.invoiceId ?? null
         }
     }
     deserialize(data: DocumentData): Transaction {
@@ -31,7 +34,9 @@ export default class TransactionSerializer extends Serializer<Transaction, Docum
             source: data.source ?? undefined,
             expiryDate: (data.expiryDate == null) ? undefined : this.dateSerializer.deserialize(data.expiryDate),
             batchNumber: data.batch_number ?? undefined,
-            paymentMethod: data.payment_method ?? undefined
+            paymentMethod: data.payment_method ?? undefined,
+            purchaseType: data.purchase_type ?? PurchaseType.cash,
+            invoiceId: data.invoice_id ?? undefined
         })
     }
 

@@ -23,12 +23,16 @@ export default defineComponent({
     methods:{
         submit(){
             this.viewModel.save();
+        },
+        handler(event){
+            event.preventDefault();
+            this.viewModel.delete();
         }
     },
     watch: {
         state: {
             handler(newValue: EditModelState<InventoryItem, InventoryItemForm>){
-                if(newValue.status === AsyncStatus.done){
+                if(newValue.status === AsyncStatus.done || newValue.deleteState.status === AsyncStatus.done){
                     this.$router.push("/admin/inventory/list");
                 }
             },
@@ -65,6 +69,9 @@ export default defineComponent({
                     <AsyncButton :state="state" class="mr-5">
                         SAVE
                     </AsyncButton>
+
+                    
+
                     <RouterLink to="/admin/inventory/list">
                         <BaseButtonVue bg="primaryDark">
                             CANCEL
@@ -74,6 +81,9 @@ export default defineComponent({
                 </div>
 
             </form>
+            <AsyncButton :state="state.deleteState" class="ml-5" bg="danger" @click="handler">
+                DELETE
+            </AsyncButton>
 
 
         </div>

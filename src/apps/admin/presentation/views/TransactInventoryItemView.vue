@@ -70,6 +70,9 @@ export default defineComponent({
                 <LabeledFieldComponentVue label="Expiry Date" class="mt-10">
                     <DateFieldComponent :field="state.form.expiryDate"/>
                 </LabeledFieldComponentVue>
+                <LabeledFieldComponentVue label="Invoice ID" class="mt-10">
+                    <TextFieldComponent type="text" :field="state.form.invoiceId"/>
+                </LabeledFieldComponentVue>
                 <LabeledFieldComponentVue label="Dispose" class="mt-10">
                     <BooleanFieldComponentVue :field="state.form.disposal"/>
                 </LabeledFieldComponentVue>
