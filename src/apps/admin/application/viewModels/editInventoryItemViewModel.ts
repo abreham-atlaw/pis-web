@@ -31,7 +31,9 @@ export default class EditInventoryItemViewModel extends EditModelViewModel<Inven
             name: "",
             unit: "pk",
             price: 0,
-            unitQuantity: 0
+            unitQuantity: 0,
+            id: undefined,
+            category: "MED"
         })
     }
 
