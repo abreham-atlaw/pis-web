@@ -4,7 +4,7 @@ import Form from "@/common/forms/form";
 
 export default class InventoryItemForm extends Form{
 
-    id = new TextField();
+    idClass = new TextField();
     name = new TextField();
     unit = new TextField();
     unitQuantity = new Field<number>();
@@ -12,7 +12,7 @@ export default class InventoryItemForm extends Form{
 
     getFields(): Field<any>[] {
         return [
-            this.id,
+            this.idClass,
             this.name,
             this.unit,
             this.unitQuantity,

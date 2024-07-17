@@ -8,14 +8,14 @@ import AsyncViewModel from "./asyncViewModel";
 
 export default abstract class EditModelViewModel<M extends Model<string>, F extends Form> extends AsyncViewModel<EditModelState<M, F>>{
 
-    private repository: FireStoreRepository<string, M>;
+    protected repository: FireStoreRepository<string, M>;
 
     constructor(state: EditModelState<M, F>){
         super(state);
         this.repository = this.initRepository();
     }
 
-    protected abstract syncFormToModel(form: F, model: M): void;
+    protected abstract syncFormToModel(form: F, model: M): Promise<void>;
 
     protected abstract syncModelToForm(model: M, form: F): void;
 
@@ -40,7 +40,7 @@ export default abstract class EditModelViewModel<M extends Model<string>, F exte
         await this.asyncCall(
             async () => {
                 await this.state.form.validate(true);
-                this.syncFormToModel(this.state.form, this.state.instance!);
+                await this.syncFormToModel(this.state.form, this.state.instance!);
                 await this.repository.save(this.state.instance!);
             }
         )

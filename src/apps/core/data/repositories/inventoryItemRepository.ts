@@ -7,8 +7,8 @@ import PaymentMethod from "../models/paymentMethod";
 import Papa from "papaparse";
 import PurchaseType from "../models/purchaseType";
 import Category from "../models/category";
-import { invalidateTypeCache } from "vue/compiler-sfc";
-
+import { collection, query, where, getDocs } from "firebase/firestore";
+import CoreProviders from "@/di/coreProviders";
 
 export default class InventoryItemRepository extends FireStoreRepository<string, InventoryItem> {
     private authenticator = new Authenticator();
@@ -63,9 +63,7 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
             invoiceId: invoiceId
         });
 
-
         inventoryItem.availableQuantity += transaction.quantity;
-    
         inventoryItem.transactions.push(transaction);
         await this.save(inventoryItem);
         return inventoryItem;
@@ -82,7 +80,6 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         return new Date(year, month, 1);
     }
 
-
     public async importFromCSV(file: File, progressUpdater: (length: Number, items: InventoryItem[], failedItems: string[]) => void): Promise<void> {
         return new Promise((resolve, reject) => {
             Papa.parse(file, {
@@ -93,15 +90,13 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
                         const items = [];
                         const failedItems = [];
                         for (const row of results.data) {
-                            try{
+                            try {
                                 const inventoryItem = await this.createFromRow(row);
                                 await this.transactItemFromRow(inventoryItem, row);
                                 items.push(inventoryItem);
+                            } catch (ex) {
+                                failedItems.push(row["id"]);
                             }
-                            catch(ex){
-                                failedItems.push(row["id"])
-                            }
-                            
                             progressUpdater(results.data.length, items, failedItems);
                         }
                         resolve();
@@ -112,16 +107,15 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
                 error: (error) => {
                     reject(error);
                 }
-
             });
         });
     }
 
-    private getPurchaseType(typeString: string): PurchaseType{
-        return (typeString === "CASH")?PurchaseType.cash:PurchaseType.credit;
+    private getPurchaseType(typeString: string): PurchaseType {
+        return (typeString === "CASH") ? PurchaseType.cash : PurchaseType.credit;
     }
 
-    private async transactItemFromRow(inventoryItem: InventoryItem, row: any): Promise<void>{
+    private async transactItemFromRow(inventoryItem: InventoryItem, row: any): Promise<void> {
         await this.transact({
             inventoryItem: inventoryItem,
             quantity: parseInt(row["quantity"]),
@@ -131,15 +125,14 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
             paymentMethod: PaymentMethod.cash,
             batchNumber: row["batch_no"],
             purchaseType: this.getPurchaseType(row["purchase_type"])
-        })
+        });
     }
 
     private async createFromRow(row: any): Promise<InventoryItem> {
-
-        try{
+        try {
             const dbItem = await this.getByPrimaryKey(row["id"]);
             return dbItem;
-        } catch(ex){ /* empty */ }
+        } catch (ex) { /* empty */ }
 
         const item = new InventoryItem({
             id: row["id"],
@@ -156,4 +149,24 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         return item;
     }
 
+    public async getNextID(prefix: string): Promise<string> {
+        const q = query(this.collection, where("id", ">=", prefix), where("id", "<=", `${prefix}-\uf8ff`));
+        const querySnapshot = await getDocs(q);
+        const ids = querySnapshot.docs.map(doc => doc.data().id);
+
+        if (ids.length === 0) {
+            return `${prefix}-001`;
+        }
+
+        ids.sort((a, b) => {
+            const numA = parseInt(a.replace(prefix + "-", ""));
+            const numB = parseInt(b.replace(prefix + "-", ""));
+            return numA - numB;
+        });
+
+        const lastId = ids[ids.length - 1];
+        const lastNum = parseInt(lastId.replace(prefix + "-", ""));
+        const nextNum = lastNum + 1;
+        return `${prefix}-${String(nextNum).padStart(3, '0')}`;
+    }
 }
