@@ -3,6 +3,7 @@
 		<input
 		:class="`${inputClass} color-${textColor} bg-${bg} border border-${borderWidth} border-${borderColor} text-${textColor} rounded-${borderRadius} focus:outline-none font-medium leading-none py-3 w-full pl-3`"
 		:type=type
+		:step=step
 		:value="(field.getValue() === null) ? '' : field.getValue()"
 		:placeholder="placeholder"
 		@change="handleInput"
@@ -36,6 +37,10 @@ export default {
 		type: {
 			type: String,
 			default: "text"
+		},
+		step: {
+			type: String,
+			default: "any"
 		},
 		bg:{
 			type: String,
