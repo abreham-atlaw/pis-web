@@ -1,5 +1,5 @@
 <template>
-    <input type="checkbox" id="checkbox" v-model="checked" @change="handleCheckboxChange">
+    <input type="checkbox" id="checkbox" v-model="checked" @change="handleCheckboxChange" class="w-5 h-5">
   </template>
   
   <script lang="ts">

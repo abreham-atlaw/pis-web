@@ -62,8 +62,13 @@ export default defineComponent({
                     <TextFieldComponent :field="(state.form.quantity as any)" type="number" :prepare-input="(value: string) => {return Number.parseFloat(value)}"/>
                 </LabeledFieldComponentVue>
                 <LabeledFieldComponentVue label="Price" class="mt-10">
-                    <TextFieldComponent type="number" :field="(state.form.price as any)" step="0.01" :prepare-input="(value: string) => {return Number.parseInt(value)}"/>
+                    <TextFieldComponent type="number" :field="(state.form.price as any)" step=".01" :prepare-input="(value: string) => {return Number.parseFloat(value)}"/>
                 </LabeledFieldComponentVue>
+
+                <LabeledFieldComponentVue label="Total Price" class="mt-10">
+                    <p class="font-bold">{{ (state.form.quantity.getValue()??0) * (state.form.price.getValue()??0)}}</p>
+                </LabeledFieldComponentVue>
+
                 <LabeledFieldComponentVue label="Source" class="mt-10">
                     <TextFieldComponent type="text" :field="state.form.source"/>
                 </LabeledFieldComponentVue>
@@ -72,6 +77,9 @@ export default defineComponent({
                 </LabeledFieldComponentVue>
                 <LabeledFieldComponentVue label="Invoice ID" class="mt-10">
                     <TextFieldComponent type="text" :field="state.form.invoiceId"/>
+                </LabeledFieldComponentVue>
+                <LabeledFieldComponentVue label="Is Credit" class="mt-10">
+                    <BooleanFieldComponentVue :field="state.form.isCredit"/>
                 </LabeledFieldComponentVue>
                 <LabeledFieldComponentVue label="Dispose" class="mt-10">
                     <BooleanFieldComponentVue :field="state.form.disposal"/>

@@ -62,7 +62,7 @@ export default defineComponent({
                             <TextFieldComponent type="number" :field="(form.quantity as any)" :prepare-input="(value: string) => {return Number.parseInt(value)}"/>
                         </LabeledFieldComponent>
                         <LabeledFieldComponent label="Price" class="mt-10">
-                            <TextFieldComponent type="number" :field="(form.price as any)" step=".01" :prepare-input="(value: string) => {return Number.parseInt(value)}"/>
+                            <TextFieldComponent type="number" :field="(form.price as any)" step=".01" :prepare-input="(value: string) => {return Number.parseFloat(value)}"/>
                         </LabeledFieldComponent>
                         <LabeledFieldComponent label="Payment Method" class="mt-10">
                             <PaymentMethodChoiceField 

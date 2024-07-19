@@ -12,6 +12,7 @@ export default class TransactInventoryItemForm extends Form{
     expiryDate = new Field<Date>();
     batchNumber = new TextField();
     invoiceId = new TextField();
+    isCredit = new Field<boolean>();
 
     getFields(): Field<any>[] {
         return [
@@ -21,6 +22,7 @@ export default class TransactInventoryItemForm extends Form{
             this.source,
             this.expiryDate,
             this.batchNumber,
+            this.isCredit,
             this.invoiceId
         ]
     }
