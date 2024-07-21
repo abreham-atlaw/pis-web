@@ -9,6 +9,7 @@ export default class InventoryItemForm extends Form{
     unit = new TextField();
     unitQuantity = new Field<number>();
     price = new Field<number>();
+    barCode = new TextField(false);
 
     getFields(): Field<any>[] {
         return [
@@ -16,7 +17,8 @@ export default class InventoryItemForm extends Form{
             this.name,
             this.unit,
             this.unitQuantity,
-            this.price
+            this.price,
+            this.barCode
         ]
     }
 }

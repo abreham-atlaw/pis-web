@@ -10,6 +10,7 @@ export default class DashboardViewModel extends AsyncViewModel<DashboardState>{
 
     public async onInit(): Promise<void> {
         await super.onInit();
+        this.inventoryItemRepository.syncAvailableQuantity();
         this.state.items = await this.inventoryItemRepository.getAll()
         this.state.lowInventoryItems = this.state.items!.sort(
             (item1, item2) => item1.availableQuantity - item2.availableQuantity

@@ -18,7 +18,8 @@ export default class InventoryItemSerializer extends Serializer<InventoryItem, D
             unit_quantity: instance.unitQuantity,
             transactions: this.transactionSerializer.serializeMany(instance.transactions),
             price: instance.price,
-            category: instance.category
+            category: instance.category,
+            bar_code: instance.barCode ?? null
         };
     }
 
@@ -31,7 +32,8 @@ export default class InventoryItemSerializer extends Serializer<InventoryItem, D
             transactions: this.transactionSerializer.deserializeMany(data.transactions),
             price: data.price,
             unitQuantity: data.unit_quantity ?? Category.med,
-            category: data.category
+            category: data.category,
+            barCode: data.bar_code ?? undefined
         });
         item.transactions.forEach(
             (transaction) => {

@@ -55,6 +55,9 @@ export default defineComponent({
                 <LabeledFieldComponent label="Name" class="mt-10">
                     <TextFieldComponent :field="state.form.name"/>
                 </LabeledFieldComponent>
+                <LabeledFieldComponent label="Bar Code" class="mt-10">
+                    <TextFieldComponent :field="state.form.barCode"/>
+                </LabeledFieldComponent>
                 <LabeledFieldComponent label="Unit" class="mt-10">
                     <TextFieldComponent :field="state.form.unit"/>
                 </LabeledFieldComponent>

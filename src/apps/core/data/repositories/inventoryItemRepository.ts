@@ -9,6 +9,7 @@ import PurchaseType from "../models/purchaseType";
 import Category from "../models/category";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import CoreProviders from "@/di/coreProviders";
+import type TransactInventoryItemForm from "@/apps/admin/application/forms/transactInventoryItemForm";
 
 export default class InventoryItemRepository extends FireStoreRepository<string, InventoryItem> {
     private authenticator = new Authenticator();
@@ -37,7 +38,8 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         batchNumber = undefined, 
         paymentMethod = undefined,
         purchaseType = PurchaseType.cash,
-        invoiceId = undefined
+        invoiceId = undefined,
+        transactionDate = undefined
     }: {
         inventoryItem: InventoryItem,
         quantity: number,
@@ -47,12 +49,13 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         batchNumber?: string,
         paymentMethod?: PaymentMethod,
         purchaseType?: PurchaseType,
-        invoiceId?: string
+        invoiceId?: string,
+        transactionDate?: Date,
     }): Promise<InventoryItem> {
         const transaction: Transaction = new Transaction({
             id: this.generateId(inventoryItem, source),
             quantity: quantity,
-            date: new Date(Date.now()),
+            date: transactionDate ?? new Date(Date.now()),
             uid: (await this.authenticator.getCurrentUser())!.uid,
             price: price,
             source: source,
@@ -69,7 +72,7 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         return inventoryItem;
     }
 
-    private parseDate(dateString: string): Date {
+    private parseDateFormat0(dateString: string): Date {
         const monthMap: { [key: string]: number } = {
             'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
             'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
@@ -78,6 +81,11 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         const year = 2000 + parseInt(yearPart);
         const month = monthMap[monthPart];
         return new Date(year, month, 1);
+    }
+
+    private parseDateFormat1(dateString: string): Date {
+        const [month, day, year] = dateString.split('/').map(Number);
+        return new Date(year, month - 1, day);
     }
 
     public async importFromCSV(file: File, progressUpdater: (length: Number, items: InventoryItem[], failedItems: string[]) => void): Promise<void> {
@@ -121,11 +129,14 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
             quantity: parseInt(row["quantity"]),
             price: parseFloat(row["unit_price"]),
             source: row["source"],
-            expiryDate: this.parseDate(row["expiry_date"]),
+            expiryDate: this.parseDateFormat1(row["expiry_date"]),
             paymentMethod: PaymentMethod.cash,
             batchNumber: row["batch_no"],
-            purchaseType: this.getPurchaseType(row["purchase_type"])
+            purchaseType: this.getPurchaseType(row["purchase_type"]),
+            transactionDate: this.parseDateFormat1(row["transaction_date"]),
+            invoiceId: row["invoice_no"]
         });
+
     }
 
     private async createFromRow(row: any): Promise<InventoryItem> {
@@ -168,5 +179,84 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         const lastNum = parseInt(lastId.replace(prefix + "-", ""));
         const nextNum = lastNum + 1;
         return `${prefix}-${String(nextNum).padStart(3, '0')}`;
+    }
+
+    private similiarTime = (date1: Date, date2: Date, n: number): boolean => {
+        const diffInMilliseconds = Math.abs(date1.getTime() - date2.getTime());
+        const diffInHours = diffInMilliseconds / (1000 * 60 * 60);
+        return diffInHours < n;
+      };
+      
+    private isDuplicated(transactions: Transaction[]): boolean{
+        const IMPORT_DATES = [
+            "Jul 20, 2024, 12:12 PM",
+            "Jul 20, 2024, 09:44 AM",
+            "Jul 14, 2024, 04:32 PM"
+        ].map((dateStr) => new Date(Date.parse(dateStr.replace(",", ""))));
+        
+        for(const transaction of transactions){
+            let isSimiliar = false;
+            for(const date of IMPORT_DATES){
+                if(this.similiarTime(date, transaction.date, 1)){
+                    isSimiliar = true;
+                    break;
+                }
+            }
+            if(!isSimiliar){
+                return false 
+            }
+        }
+
+        return true;
+
+    }
+
+    public async cleanDuplicates(){
+
+        const items = await this.getAll();
+
+        for(const item of items){
+            console.log(`Checking ${item.name}`);
+            if(item.transactions.length < 2){
+                continue;
+            }
+            for(const transaction0 of item.transactions){
+                let foundDuplicates = false;
+                for(const transaction1 of item.transactions){
+
+                    if(transaction0.id === transaction1.id){
+                        continue;
+                    }
+
+                    if(this.isDuplicated([transaction0, transaction1])){
+                        console.log(`Found Duplicate: , ${item.name}, "Transactions: (${transaction0.date}, ${transaction1.date})`);
+                        item.transactions = item.transactions.filter(
+                            (t) => t.id != transaction1.id
+                        );
+                        console.log(`${item.name} Clean:`, item.transactions.map((t) => t.date).join(", "));
+                        await this.update(item);
+                        foundDuplicates = true;
+                        break;
+                    }
+
+                }
+                if(foundDuplicates){
+                    break;
+                }
+
+            }
+        }
+
+    }
+
+
+    public async syncAvailableQuantity(){
+        const items = await this.getAll();
+
+        for(const item of items){
+            item.availableQuantity = item.transactions.map((t) => t.quantity).reduce((sum, current) => sum+current, 0);
+            console.log(`${item.name}: ${item.availableQuantity}`)
+            await this.update(item);
+        }
     }
 }

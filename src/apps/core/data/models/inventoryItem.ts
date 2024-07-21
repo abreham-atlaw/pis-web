@@ -13,6 +13,7 @@ export default class InventoryItem implements Model<string> {
     unit: string;
     unitQuantity: number;
     category: string;
+    barCode?: string;
 
     constructor({
         id = null,
@@ -22,7 +23,8 @@ export default class InventoryItem implements Model<string> {
         transactions = [],
         unit,
         unitQuantity = 0,
-        category = Category.med
+        category = Category.med,
+        barCode = undefined
     }: {
         id?: string | null;
         name: string;
@@ -31,7 +33,8 @@ export default class InventoryItem implements Model<string> {
         transactions?: Transaction[];
         unit: string;
         unitQuantity: number;
-        category: string
+        category: string,
+        barCode?: string
     }) {
         this.id = id;
         this.name = name;
@@ -41,6 +44,7 @@ export default class InventoryItem implements Model<string> {
         this.unit = unit;
         this.unitQuantity = unitQuantity;
         this.category = category;
+        this.barCode = barCode;
     }
 
     getPK(): string | null {
@@ -57,6 +61,10 @@ export default class InventoryItem implements Model<string> {
 
     get pkAvailableQuantity(): number{
         return this.availableQuantity / this.unitQuantity;
+    }
+
+    get hasBarCode(): boolean{
+        return this.barCode != undefined;
     }
 
     private sumTransactions(transactions: Transaction[]): number {
