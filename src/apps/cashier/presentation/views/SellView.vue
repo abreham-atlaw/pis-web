@@ -10,6 +10,8 @@ import AsyncButton from '@/common/components/buttons/AsyncButton.vue';
 import type InventoryItem from '@/apps/core/data/models/inventoryItem';
 import type SellForm from '../../application/forms/sellForm';
 import PaymentMethodChoiceField from '../components/PaymentMethodChoiceField.vue';
+import TextSelectionFieldComponent from '@/common/components/form/TextSelectionFieldComponent.vue';
+import DateFieldComponent from '@/common/components/form/DateFieldComponent.vue';
 
 export default defineComponent({
     data() {
@@ -33,7 +35,7 @@ export default defineComponent({
             form.price.setValue(item.price);
         }
     },
-    components: { ViewModelView, ItemChoiceField, LabeledFieldComponent, TextFieldComponent, AsyncButton, PaymentMethodChoiceField }
+    components: { ViewModelView, ItemChoiceField, LabeledFieldComponent, TextFieldComponent, AsyncButton, PaymentMethodChoiceField, TextSelectionFieldComponent, DateFieldComponent }
 })
 
 </script>
@@ -63,6 +65,12 @@ export default defineComponent({
                         </LabeledFieldComponent>
                         <LabeledFieldComponent label="Price" class="mt-10">
                             <TextFieldComponent type="number" :field="(form.price as any)" step=".01" :prepare-input="(value: string) => {return Number.parseFloat(value)}"/>
+                        </LabeledFieldComponent>
+                        <LabeledFieldComponent label="Batch Number" class="mt-10">
+                            <TextSelectionFieldComponent :field="form.batchNumber" :choices="form.batchNumbers"/>
+                        </LabeledFieldComponent>
+                        <LabeledFieldComponent label="Date" class="mt-10">
+                            <DateFieldComponent :field="form.date"/>
                         </LabeledFieldComponent>
                         <LabeledFieldComponent label="Payment Method" class="mt-10">
                             <PaymentMethodChoiceField 

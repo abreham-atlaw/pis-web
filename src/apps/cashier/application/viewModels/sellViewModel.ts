@@ -20,7 +20,9 @@ export default class SellViewModel extends AsyncViewModel<SellState>{
             inventoryItem:form.item.getValue()!, 
             quantity: -form.quantity.getValue()!,
             price: form.price.getValue()!, 
-            paymentMethod: form.paymentMethod.getValue()!
+            paymentMethod: form.paymentMethod.getValue()!,
+            batchNumber: form.batchNumber.getValue()!,
+            transactionDate: form.date.getValue()!
         });
     }
 

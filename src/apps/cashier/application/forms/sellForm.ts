@@ -1,6 +1,6 @@
 import type InventoryItem from "@/apps/core/data/models/inventoryItem";
 import PaymentMethod from "@/apps/core/data/models/paymentMethod";
-import Field from "@/common/forms/fields";
+import Field, { TextField } from "@/common/forms/fields";
 import Form from "@/common/forms/form";
 
 
@@ -18,13 +18,28 @@ export default class SellForm extends Form{
     );
     price = new Field<number>();
     paymentMethod = new Field<PaymentMethod>();
+    batchNumber = new TextField();
+    date = new Field<Date>();
 
     getFields(): Field<any>[] {
         return [
             this.item,
             this.quantity,
             this.price,
-            this.paymentMethod
+            this.batchNumber,
+            this.paymentMethod,
+            this.date
         ]
+    }
+
+    get batchNumbers(): string[]{
+        if(this.item.getValue() === null){
+            return [];
+        }
+
+        const batchNumbers = this.item.getValue()!.transactions.map(
+            (transaction) => transaction.batchNumber
+        );
+        return Array.from(new Set(batchNumbers));
     }
 }
