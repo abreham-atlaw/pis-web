@@ -4,7 +4,7 @@
         <div class="overflow-y-auto h-[150px]">
             <div v-for="(item, i) in filteredItems.slice(0, 5)" :key="i" class="flex items-center" :class="(selectedItem === item)?'bg-warning text-white':'bg-light text-dark'">
                 <button class="px-10 py-3 mx-2 my-2 rounded-xl" @click.prevent="() => {onSelect(item)}">
-                    {{ item.name }}
+                    [ {{item.id}} ]{{ item.name }}
                 </button>
             </div>
         </div>
@@ -40,7 +40,12 @@ export default defineComponent({
     },
     computed: {
         filteredItems() {
-            return this.items.filter(item => item.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
+            return this.items.filter(
+                item => (
+                    item.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                    item.id.toLocaleLowerCase().includes(this.searchQuery.toLocaleLowerCase())
+                )
+            )
         }
     },
     methods: {
