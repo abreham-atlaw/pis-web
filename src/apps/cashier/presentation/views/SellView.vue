@@ -72,6 +72,9 @@ export default defineComponent({
                         <LabeledFieldComponent label="Date" class="mt-10">
                             <DateFieldComponent :field="form.date"/>
                         </LabeledFieldComponent>
+                        <LabeledFieldComponent label="Invoice ID" class="mt-10">
+                            <TextFieldComponent :field="(form.invoiceId)"/>
+                        </LabeledFieldComponent>
                         <LabeledFieldComponent label="Payment Method" class="mt-10">
                             <PaymentMethodChoiceField 
                             :field="form.paymentMethod as any"/>

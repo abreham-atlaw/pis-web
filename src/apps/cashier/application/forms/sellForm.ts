@@ -20,6 +20,7 @@ export default class SellForm extends Form{
     paymentMethod = new Field<PaymentMethod>();
     batchNumber = new TextField();
     date = new Field<Date>();
+    invoiceId = new TextField();
 
     getFields(): Field<any>[] {
         return [
@@ -28,7 +29,8 @@ export default class SellForm extends Form{
             this.price,
             this.batchNumber,
             this.paymentMethod,
-            this.date
+            this.date,
+            this.invoiceId
         ]
     }
 
