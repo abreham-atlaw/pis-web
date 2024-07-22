@@ -22,12 +22,23 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         );
     }
 
+    private sort(items: InventoryItem[]): InventoryItem[]{
+        return items.sort(
+            (a, b) => a.id.localeCompare(b.id)
+        );
+    }
+
+    public async getAll(): Promise<InventoryItem[]> {
+        return this.sort(await super.getAll());
+    }
+
     private generateId(inventoryItem: InventoryItem, source?: string): string {
         const sourceString = source ?? "none";
         return `${sourceString}-${inventoryItem.transactions.filter(
             (transaction) => transaction.source == source
         ).length}`;
     }
+
 
     public async transact({
         inventoryItem, 
