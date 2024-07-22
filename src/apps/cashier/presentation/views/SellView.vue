@@ -66,6 +66,9 @@ export default defineComponent({
                         <LabeledFieldComponent label="Price" class="mt-10">
                             <TextFieldComponent type="number" :field="(form.price as any)" step=".01" :prepare-input="(value: string) => {return Number.parseFloat(value)}"/>
                         </LabeledFieldComponent>
+                         <LabeledFieldComponent label="Total Price" class="mt-10">
+                            {{ (form.quantity.getValue()?? 0) * (form.price.getValue() ?? 0) }}
+                        </LabeledFieldComponent>
                         <LabeledFieldComponent label="Batch Number" class="mt-10">
                             <TextSelectionFieldComponent :field="form.batchNumber" :choices="form.batchNumbers"/>
                         </LabeledFieldComponent>
