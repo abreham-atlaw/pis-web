@@ -113,6 +113,14 @@ export default defineComponent({
                     <span class="w-1/4">{{ form.price.getValue() }}</span>
                     <span class="w-1/4">{{ form.price.getValue() * form.quantity.getValue() }}</span>
                 </div>
+                <div class="flex flex-col border-t pt-5 mt-5">
+                    <span class="w-1/4 ml-auto">{{ state.forms.map(
+                            (form) => form.price.getValue() * form.quantity.getValue()
+                        ).reduce(
+                            (sum, price) => sum + price,
+                            0
+                        ) }}</span>
+                </div>
 
                 <div class="mt-auto">
                     <AsyncButton class="block w-full" :state="state" @click="sell">
