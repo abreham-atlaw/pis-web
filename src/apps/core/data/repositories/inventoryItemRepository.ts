@@ -99,6 +99,13 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         return new Date(year, month - 1, day);
     }
 
+    private autoParseDate(dateString: string): Date{
+        if(dateString.includes("-")){
+            return this.parseDateFormat0(dateString);
+        }
+        return this.parseDateFormat1(dateString);
+    }
+
     public async importFromCSV(file: File, progressUpdater: (length: Number, items: InventoryItem[], failedItems: string[]) => void): Promise<void> {
         return new Promise((resolve, reject) => {
             Papa.parse(file, {
@@ -140,7 +147,7 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
             quantity: parseInt(row["quantity"]),
             price: parseFloat(row["unit_price"]),
             source: row["source"],
-            expiryDate: this.parseDateFormat1(row["expiry_date"]),
+            expiryDate: this.autoParseDate(row["expiry_date"]),
             paymentMethod: PaymentMethod.cash,
             batchNumber: row["batch_no"],
             purchaseType: this.getPurchaseType(row["purchase_type"]),
