@@ -273,8 +273,87 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
 
         for(const item of items){
             item.availableQuantity = item.transactions.map((t) => t.quantity).reduce((sum, current) => sum+current, 0);
-            console.log(`${item.name}: ${item.availableQuantity}`)
             await this.update(item);
         }
     }
+
+    public async getItemsTransactions(items: InventoryItem[]){
+        let transactions = [];
+        items.forEach(
+            (item) => {
+                transactions = transactions.concat(item.transactions);
+            }
+        );
+        return transactions;
+    }
+
+    public async getItemsSales(items: InventoryItem[]): Promise<Transaction[]>{
+        return this.filterSales(
+            await this.getItemsTransactions(items)
+        );
+    }
+
+    public async getItemsPurchases(items: InventoryItem[]): Promise<Transaction[]>{
+        return this.filterPurchases(
+            await this.getItemsTransactions(items)
+        );
+    }
+
+    public async exportItemsToCSV(items: InventoryItem[], fields?: string[]): Promise<string>{
+        const defaultFields = ['id', 'name', 'price', 'availableQuantity', 'unit', 'unitQuantity'];
+    
+        const selectedFields = fields || defaultFields;
+    
+        const data = items.map(item => {
+            const itemData: Record<string, any> = {};
+            selectedFields.forEach(field => {
+                itemData[field] = item[field as keyof InventoryItem];
+            });
+            return itemData;
+        });
+    
+        const csv = Papa.unparse(data, {
+            columns: selectedFields
+        });
+
+        return csv;
+    
+    }
+
+    public async exportTransactionsToCSV(transactions: Transaction[], fields?: string[]): Promise<string>{
+        
+        const defaultFields = ['id', 'quantity', 'date', 'price', 'source', 'invoiceId'];
+
+        const selectedFields = fields || defaultFields;
+
+        const data = transactions.map(transaction => {
+            const transactionData: Record<string, any> = {};
+            selectedFields.forEach(field => {
+                transactionData[field] = transaction[field as keyof Transaction];
+                if(field === "quantity"){
+                    transactionData[field] = Math.abs(transactionData[field]);
+                }
+            });
+            return transactionData;
+        });
+
+        const csv = Papa.unparse(data, {
+            columns: selectedFields
+        });
+
+        return csv;
+    }
+
+    public filterSales(transactions: Transaction[]){
+        return transactions.filter(
+            (transaction) => transaction.quantity < 0
+        );
+    }
+
+    public filterPurchases(transactions: Transaction[]){
+        return transactions.filter(
+            (transaction) => transaction.quantity > 0
+        );
+    }
+
 }

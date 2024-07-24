@@ -27,4 +27,10 @@ export default class RoutingUtils{
 		return router.query;
 	}
 
+
+	static createLink(content: string, type: string): string{
+		const blob = new Blob([content], { type: `text/${type};charset=utf-8;` });
+		const url = URL.createObjectURL(blob);
+		return url;
+	}
 }

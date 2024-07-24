@@ -8,7 +8,7 @@ import AsyncViewModel from "./asyncViewModel";
 export default class ModelListViewModel<M extends Model<string>> extends AsyncViewModel<ModelListState<M>>{
 
 
-    private repository: FireStoreRepository<string, M>;
+    protected repository: FireStoreRepository<string, M>;
 
     constructor(state: ModelListState<M>, repository: FireStoreRepository<string, M>){
         super(state);
@@ -17,7 +17,8 @@ export default class ModelListViewModel<M extends Model<string>> extends AsyncVi
 
     public async onInit(): Promise<void> {
         await super.onInit();
-        this.state.values = await this.repository.getAll();
+        this.state.allValues = await this.repository.getAll();
+        this.state.values = this.state.allValues;
     }
 
 }

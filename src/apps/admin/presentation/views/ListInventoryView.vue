@@ -7,6 +7,7 @@ import ModelListState from '@/common/state/modelListState';
 import MathUtils from '@/common/utils/math';
 import ModelListViewModel from '@/common/viewmodel/modelListViewModel';
 import { defineComponent, ref } from 'vue';
+import ListInventoryItemsViewModel from '../../application/viewModels/listInventoryItemsViewModel';
 
 
 export default defineComponent({
@@ -14,9 +15,20 @@ export default defineComponent({
         let state = ref(new ModelListState<InventoryItem>());
         return {
             state,
-            viewModel: new ModelListViewModel<InventoryItem>(state.value as any, new InventoryItemRepository()),
+            viewModel: new ListInventoryItemsViewModel(state.value as any),
             MathUtils
         };
+    },
+    methods: {
+        exportItems(){
+            this.viewModel.exportItems();
+        },
+        exportSales(){
+            this.viewModel.exportSales();
+        },
+        exportPurchases(){
+            this.viewModel.exportPurchases();
+        }
     },
     components: { ViewModelView, BaseButtonVue }
 })
@@ -29,8 +41,10 @@ export default defineComponent({
         <div class="backdrop-blur-xl rounded-2xl p-10 mx-6 my-8">
             <div class="flex">
                 <h1 class="text-3xl">Inventory Items</h1>
+                <BaseButtonVue class="ml-12" @click="exportItems">Export Items</BaseButtonVue>
+                <BaseButtonVue class="ml-5" @click="exportSales">Export Sales</BaseButtonVue>
+                <BaseButtonVue class="ml-5" @click="exportPurchases">Export Purchases</BaseButtonVue>
                 <RouterLink to="/admin/inventory/edit" class="block ml-auto"><BaseButtonVue>New</BaseButtonVue></RouterLink>
-
             </div>
             <table class="w-full text-left border-collapse mt-16">
                 <thead class="border-b">

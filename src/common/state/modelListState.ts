@@ -1,10 +1,11 @@
 import type Model from "../models/model";
-import BaseState from "./baseState";
+import { AsyncState } from "./baseState";
 
 
 
-export default class ModelListState<T extends Model<string>> extends BaseState{
+export default class ModelListState<T extends Model<string>> extends AsyncState{
 
+    allValues?: T[];
     values?: T[];
 
 }
