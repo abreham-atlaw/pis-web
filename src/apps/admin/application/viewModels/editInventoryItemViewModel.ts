@@ -3,6 +3,7 @@ import type InventoryItemForm from "../forms/inventoryItemForm";
 import InventoryItem from "@/apps/core/data/models/inventoryItem";
 import type { FireStoreRepository } from "@/common/repositories/firestoreRepository";
 import InventoryItemRepository from "@/apps/core/data/repositories/inventoryItemRepository";
+import ItemClass from "@/apps/core/data/models/itemClass";
 
 
 
@@ -39,7 +40,8 @@ export default class EditInventoryItemViewModel extends EditModelViewModel<Inven
             unitQuantity: 0,
             id: undefined,
             category: "MED",
-            barCode: ""
+            barCode: "",
+            itemClass: ItemClass.main
         });
     }
 

@@ -27,7 +27,7 @@ export default class InventoryItem implements Model<string> {
         unitQuantity = 0,
         category = Category.med,
         barCode = undefined,
-        itemClass = ItemClass.main
+        itemClass
     }: {
         id?: string | null;
         name: string;
@@ -38,7 +38,7 @@ export default class InventoryItem implements Model<string> {
         unitQuantity: number;
         category: string,
         barCode?: string,
-        itemClass?: ItemClass
+        itemClass: ItemClass
     }) {
         this.id = id;
         this.name = name;
