@@ -31,7 +31,7 @@ export default defineComponent({
         state: {
             handler(newValue: EditModelState<InventoryItem, InventoryItemForm>){
                 if(newValue.status === AsyncStatus.done){
-                    this.$router.push("/admin/inventory/list");
+                   // this.$router.push("/admin/inventory/list");
                 }
             },
             deep: true
@@ -54,11 +54,14 @@ export default defineComponent({
                 </LabeledFieldComponent>
                 
 
-                <div v-if="state.status === AsyncStatus.loading" class="my-10">
+                <div v-if="state.status === AsyncStatus.loading || state.status == AsyncStatus.done" class="my-10">
                     <p>Processed {{state.progress!.items[state.progress!.items.length - 1].name}} ...</p>
                     <p class="font-bold">Progress: {{state.progress!.items.length}} of {{state.progress!.length}} Done</p>
                     <p class="font-bold text-danger" v-if="state.progress!.failedItems.length > 0">Failed Items: <span v-for="id in state.progress!.failedItems" :key="id">{{ id }}, </span></p>
                 </div>
+                <p v-if="state.status == AsyncStatus.done" class="my-10 font-bold text-success">
+                    Completed!
+                </p>
 
 
                 <div class="w-full mt-10 flex">

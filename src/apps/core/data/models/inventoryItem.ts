@@ -1,6 +1,7 @@
 import type Model from "@/common/models/model";
 import type Transaction from "./transaction";
 import Category from "./category";
+import ItemClass from "./itemClass";
 
 
 export default class InventoryItem implements Model<string> {
@@ -13,6 +14,7 @@ export default class InventoryItem implements Model<string> {
     unit: string;
     unitQuantity: number;
     category: string;
+    itemClass: ItemClass;
     barCode?: string;
 
     constructor({
@@ -24,7 +26,8 @@ export default class InventoryItem implements Model<string> {
         unit,
         unitQuantity = 0,
         category = Category.med,
-        barCode = undefined
+        barCode = undefined,
+        itemClass = ItemClass.main
     }: {
         id?: string | null;
         name: string;
@@ -34,7 +37,8 @@ export default class InventoryItem implements Model<string> {
         unit: string;
         unitQuantity: number;
         category: string,
-        barCode?: string
+        barCode?: string,
+        itemClass?: ItemClass
     }) {
         this.id = id;
         this.name = name;
@@ -45,6 +49,7 @@ export default class InventoryItem implements Model<string> {
         this.unitQuantity = unitQuantity;
         this.category = category;
         this.barCode = barCode;
+        this.itemClass = itemClass;
     }
 
     getPK(): string | null {

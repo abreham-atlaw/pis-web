@@ -122,6 +122,9 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
                                 items.push(inventoryItem);
                             } catch (ex) {
                                 failedItems.push(row["id"]);
+                                console.log(`Failure`);
+                                console.log(row);
+                                console.log(ex);
                             }
                             progressUpdater(results.data.length, items, failedItems);
                         }
@@ -171,7 +174,8 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
             unitQuantity: parseFloat(row["unit_quantity"]),
             availableQuantity: 0,
             category: row["category"] ?? Category.med,
-            transactions: []
+            transactions: [],
+            itemClass: parseInt(row["item_class"])
         });
 
         await this.create(item);
