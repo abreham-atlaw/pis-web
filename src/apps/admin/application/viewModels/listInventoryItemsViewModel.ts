@@ -39,7 +39,10 @@ export default class ListInventoryItemsViewModel extends ModelListViewModel<Inve
                 getValue(instance) {
                     return instance.availableQuantity.toString();
                 },
-                allowFilter: false
+                allowFilter: false,
+                compareValues(a, b){
+                    return a.availableQuantity - b.availableQuantity;
+                }
             },
 
             {
@@ -47,7 +50,10 @@ export default class ListInventoryItemsViewModel extends ModelListViewModel<Inve
                 getValue(instance) {
                     return instance.price.toString();
                 },
-                allowFilter: false
+                allowFilter: false,
+                compareValues(a, b){
+                    return a.price - b.price;
+                }
             },
 
             {
@@ -55,21 +61,24 @@ export default class ListInventoryItemsViewModel extends ModelListViewModel<Inve
                 getValue(instance) {
                     return instance.pkPrice.toString();
                 },
-                allowFilter: false
-            },
-
-            {
-                name: "Unit",
-                getValue(instance) {
-                    return instance.unit.toString();
-                },
-                allowFilter: true
+                allowFilter: false,
+                compareValues(a, b){
+                    return a.pkPrice - b.pkPrice;
+                }
             },
 
             {
                 name: "Class",
                 getValue(instance) {
                     return ItemClass[instance.itemClass].toUpperCase();;
+                },
+                allowFilter: true
+            },
+
+            {
+                name: "Category",
+                getValue(instance){
+                    return instance.category
                 },
                 allowFilter: true
             }

@@ -44,14 +44,46 @@ export default abstract class ModelListViewModel<M extends Model<string>> extend
 
     public async filter(field: ModelField<M>, value?: string){
         if(value == null){
+            this.state.filterField = undefined;
             this.state.values = this.state.allValues;
         }
         else{
             this.state.values = this.state.allValues!.filter(
                 (instance: M) => field.getValue(instance) == value
             );
+            this.state.filterField = field;
         }
         
+        this.syncState();
+    }
+
+    public async sort(field?: ModelField<M>){
+        console.log(`Sorting using ${field.name}`)
+        if(field == null){
+            this.state.values = this.state.allValues;
+            this.state.sortField = undefined;
+        }
+        else{
+
+            if(field == this.state.sortField){
+                this.state.sortReverse = !this.state.sortField;
+            }
+            console.log(this.state.values);
+            if(field.compareValues != null){
+                this.state.values = this.state.values.sort(field.compareValues);
+            }
+            else{
+                this.state.values = this.state.values.sort(
+                    (a: M, b: M) => field.getValue(a).localeCompare(field.getValue(b))
+                )
+                
+            }
+            console.log(this.state.values);
+            if(this.state.sortReverse){
+                console.log("Reversing...")
+                this.state.values = this.state.values.reverse();
+            }
+        }
         this.syncState();
     }
 

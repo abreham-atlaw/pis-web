@@ -14,6 +14,10 @@ export default defineComponent({
         filter: {
             type: Function as any as () => (value?: string) => void,
             required: false
+        },
+        sort: {
+            type: Function as any as () => () => void,
+            default: null
         }
     },
     setup(props) {
@@ -43,6 +47,8 @@ export default defineComponent({
         <span class="flex">
             {{ title }}
             <span v-if="filterValues" class="ml-2 fa-solid fa-filter my-auto" @click="toggleFilterDropdown" ></span>
+            <span v-if="sort" class="ml-2 fa-solid fa-sort my-auto" @click="sort" ></span>
+
         </span>
         <div v-if="showFilterDropdown" class="absolute bg-white border mt-1 rounded-md shadow-lg z-10">
             <ul>

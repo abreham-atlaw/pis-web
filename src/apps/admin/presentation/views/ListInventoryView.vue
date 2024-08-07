@@ -39,6 +39,9 @@ export default defineComponent({
         },
         filter(field: ModelField<InventoryItem>, value?: string) {
             this.viewModel.filter(field, value);
+        },
+        sort(field?: ModelField<InventoryItem>){
+            this.viewModel.sort(field);
         }
     }
 });
@@ -62,6 +65,7 @@ export default defineComponent({
                         :title="field.name" 
                         :filter="(value: string) => filter(field, value)"
                         :filter-values="(field.allowFilter) ? state.filterValues!.get(field): null"
+                        :sort="() => sort(field)"
                         />
                         <TableHeadingComponent
                         title="Actions"
@@ -105,10 +109,6 @@ export default defineComponent({
                                 </RouterLink>
                             </div>
                             
-                            <!-- <RouterLink 
-                            :to="`/admin/inventory/transact?id=${item.id}`" class="text-indigo-600 hover:text-indigo-900 mr-4 bg-primary text-light rounded-full w-10 h-10 block flex"><i class="fa-solid fa-plus m-auto text-light"></i></RouterLink>
-                            <RouterLink :to="`/admin/inventory/edit?id=${item.id}`" class="text-indigo-600 hover:text-indigo-900"><BaseButtonVue bg="primaryDark"><i class="fa-solid fa-pen"></i></BaseButtonVue></RouterLink>
-                            <RouterLink :to="`/admin/inventory/track?id=${item.id}`"><BaseButtonVue bg="success"><i class="fa-solid fa-book"></i></BaseButtonVue></RouterLink> -->
                         </td>
                     </tr>
                 </tbody>
