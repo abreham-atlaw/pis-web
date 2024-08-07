@@ -73,8 +73,42 @@ export default defineComponent({
                             {{ field.getValue(item as any) }}
                         </td>
                         <td class="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap">
-                            <RouterLink :to="`/admin/inventory/transact?id=${item.id}`" class="text-indigo-600 hover:text-indigo-900 mr-8"><BaseButtonVue>Add</BaseButtonVue></RouterLink>
-                            <RouterLink :to="`/admin/inventory/edit?id=${item.id}`" class="text-indigo-600 hover:text-indigo-900"><BaseButtonVue bg="primaryDark">Edit</BaseButtonVue></RouterLink>
+                            <div class="flex">
+                                <RouterLink
+                                    :key="link.link"
+                                    v-for="link in [
+                                        {
+                                            link: `/admin/inventory/transact?id=${item.id}`,
+                                            bg: 'primary',
+                                            icon: 'fa-solid fa-plus'
+                                        },
+
+                                        {
+                                            link: `/admin/inventory/edit?id=${item.id}`,
+                                            bg: 'primaryDark',
+                                            icon: 'fa-solid fa-pen'
+                                        },
+
+                                        {
+                                            link: `/admin/inventory/track?id=${item.id}`,
+                                            bg: 'success',
+                                            icon: 'fa-solid fa-book'
+                                        },
+
+                                    ]"
+                                    :to="link.link"
+                                    class="text-indigo-600 hover:text-indigo-900 mr-4 bg-primary text-light rounded-full w-10 h-10 block flex"
+                                    :class="`bg-${link.bg}`"
+                                    >
+
+                                    <i class="m-auto text-light" :class="link.icon"></i>
+                                </RouterLink>
+                            </div>
+                            
+                            <!-- <RouterLink 
+                            :to="`/admin/inventory/transact?id=${item.id}`" class="text-indigo-600 hover:text-indigo-900 mr-4 bg-primary text-light rounded-full w-10 h-10 block flex"><i class="fa-solid fa-plus m-auto text-light"></i></RouterLink>
+                            <RouterLink :to="`/admin/inventory/edit?id=${item.id}`" class="text-indigo-600 hover:text-indigo-900"><BaseButtonVue bg="primaryDark"><i class="fa-solid fa-pen"></i></BaseButtonVue></RouterLink>
+                            <RouterLink :to="`/admin/inventory/track?id=${item.id}`"><BaseButtonVue bg="success"><i class="fa-solid fa-book"></i></BaseButtonVue></RouterLink> -->
                         </td>
                     </tr>
                 </tbody>

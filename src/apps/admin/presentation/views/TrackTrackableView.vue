@@ -36,7 +36,7 @@ export default defineComponent({
 <template>
     <ViewModelView :view-model="viewModel" :state="state">
         <div class="px-6 py-8">
-            <h1 class="text-2xl font-extrabold uppercase"><RouterLink to="/admin/report" class="mr-5"><i class="fa-solid fa-chevron-left"></i></RouterLink>{{state.instance!.name}} History</h1>
+            <h1 class="text-2xl font-extrabold uppercase"><RouterLink to="/admin/inventory/list" class="mr-5"><i class="fa-solid fa-chevron-left"></i></RouterLink>{{state.instance!.name}} History</h1>
             <table class="w-full text-left border-collapse mt-16 backdrop-blur-2xl">
                 <thead class="border-b">
                     <tr>
