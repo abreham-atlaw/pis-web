@@ -81,6 +81,9 @@ export default defineComponent({
                 <LabeledFieldComponentVue label="Is Credit" class="mt-10">
                     <BooleanFieldComponentVue :field="state.form.isCredit"/>
                 </LabeledFieldComponentVue>
+                <LabeledFieldComponentVue label="Is Side" class="mt-10">
+                    <BooleanFieldComponentVue :field="state.form.isSide"/>
+                </LabeledFieldComponentVue>
                 <LabeledFieldComponentVue label="Dispose" class="mt-10">
                     <BooleanFieldComponentVue :field="state.form.disposal"/>
                 </LabeledFieldComponentVue>

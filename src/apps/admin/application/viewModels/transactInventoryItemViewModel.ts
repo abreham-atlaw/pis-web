@@ -2,6 +2,7 @@ import AsyncViewModel from "@/common/viewmodel/asyncViewModel";
 import InventoryItemRepository from "@/apps/core/data/repositories/inventoryItemRepository";
 import type TransactInventoryItemState from "../states/transactInventoryItemState";
 import PurchaseType from "@/apps/core/data/models/purchaseType";
+import TransactionClass from "@/apps/core/data/models/transactionClass";
 
 
 export default class TransactInventoryItemViewModel extends AsyncViewModel<TransactInventoryItemState>{
@@ -38,7 +39,8 @@ export default class TransactInventoryItemViewModel extends AsyncViewModel<Trans
                     expiryDate: this.state.form.expiryDate.getValue()!,
                     batchNumber: this.state.form.batchNumber.getValue()!,
                     invoiceId: this.state.form.invoiceId.getValue()!,
-                    purchaseType: (this.state.form.isCredit.getValue()) ? PurchaseType.credit : PurchaseType.cash
+                    purchaseType: (this.state.form.isCredit.getValue()) ? PurchaseType.credit : PurchaseType.cash,
+                    transactionClass: (this.state.form.isSide.getValue()) ? TransactionClass.side : TransactionClass.main
                 });
             }
         );
