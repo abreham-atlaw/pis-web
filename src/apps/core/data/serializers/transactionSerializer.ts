@@ -21,7 +21,8 @@ export default class TransactionSerializer extends Serializer<Transaction, Docum
             batch_number: instance.batchNumber ?? null,
             payment_method: instance.paymentMethod ?? null,
             purchase_type: instance.purchaseType ?? PurchaseType.cash,
-            invoice_id: instance.invoiceId ?? null
+            invoice_id: instance.invoiceId ?? null,
+            transaction_class: instance.transactionClass
         }
     }
     deserialize(data: DocumentData): Transaction {
@@ -36,7 +37,8 @@ export default class TransactionSerializer extends Serializer<Transaction, Docum
             batchNumber: data.batch_number ?? undefined,
             paymentMethod: data.payment_method ?? undefined,
             purchaseType: data.purchase_type ?? PurchaseType.cash,
-            invoiceId: data.invoice_id ?? undefined
+            invoiceId: data.invoice_id ?? undefined,
+            transactionClass: data.transaction_class
         })
     }
 

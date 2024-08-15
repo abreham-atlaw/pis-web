@@ -84,7 +84,7 @@ export default defineComponent({
                                         {
                                             link: `/admin/inventory/transact?id=${item.id}`,
                                             bg: 'primary',
-                                            icon: 'fa-solid fa-plus'
+                                            icon: 'fa-solid fa-plus',
                                         },
 
                                         {
@@ -96,13 +96,15 @@ export default defineComponent({
                                         {
                                             link: `/admin/inventory/track?id=${item.id}`,
                                             bg: 'success',
-                                            icon: 'fa-solid fa-book'
+                                            icon: 'fa-solid fa-book',
+                                            target: '_blank'
                                         },
 
                                     ]"
                                     :to="link.link"
                                     class="text-indigo-600 hover:text-indigo-900 mr-4 bg-primary text-light rounded-full w-10 h-10 block flex"
                                     :class="`bg-${link.bg}`"
+                                    :target="link.target"
                                     >
 
                                     <i class="m-auto text-light" :class="link.icon"></i>

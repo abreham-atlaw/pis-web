@@ -3,7 +3,6 @@ import { type DocumentData } from "firebase/firestore";
 import InventoryItem from "../models/inventoryItem";
 import TransactionSerializer from "./transactionSerializer";
 import Category from "../models/category";
-import ItemClass from "../models/itemClass";
 
 
 export default class InventoryItemSerializer extends Serializer<InventoryItem, DocumentData> {
@@ -21,7 +20,6 @@ export default class InventoryItemSerializer extends Serializer<InventoryItem, D
             price: instance.price,
             category: instance.category,
             bar_code: instance.barCode ?? null,
-            item_class: instance.itemClass
         };
     }
 
@@ -36,7 +34,6 @@ export default class InventoryItemSerializer extends Serializer<InventoryItem, D
             unitQuantity: data.unit_quantity ?? Category.med,
             category: data.category,
             barCode: data.bar_code ?? undefined,
-            itemClass: data.item_class
         });
         item.transactions.forEach(
             (transaction) => {

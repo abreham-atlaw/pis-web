@@ -9,7 +9,7 @@ import AsyncViewModel from "./asyncViewModel";
 export default abstract class ModelListViewModel<M extends Model<string>> extends AsyncViewModel<ModelListState<M>>{
 
 
-    protected repository: FireStoreRepository<string, M>;
+    public repository: FireStoreRepository<string, M>;
 
     constructor(state: ModelListState<M>, repository: FireStoreRepository<string, M>){
         super(state);

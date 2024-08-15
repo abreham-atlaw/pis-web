@@ -46,6 +46,10 @@ export abstract class FireStoreRepository<P, M extends Model<P>> implements Repo
 		this.cache.set(pk, instance) 
 	}
 
+	protected async resetCache(pk: P){
+		this.cache.delete(pk);
+	}
+
 	protected async getDocument(pk: P): Promise<QueryDocumentSnapshot<DocumentData>>{
 		const cached = await this.getFromCache(pk)
 		
@@ -127,6 +131,7 @@ export abstract class FireStoreRepository<P, M extends Model<P>> implements Repo
 		const document = await this.getDocument(instance.getPK()!);
 		const data = this.serializer.serialize(instance);
 		await setDoc(doc(this.collection, document.id), data);
+		this.resetCache(instance.getPK());
 	}
 
 	public async save(instance: M){

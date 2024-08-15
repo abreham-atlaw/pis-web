@@ -10,6 +10,8 @@ import Category from "../models/category";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import CoreProviders from "@/di/coreProviders";
 import type TransactInventoryItemForm from "@/apps/admin/application/forms/transactInventoryItemForm";
+import TransactionClass from "../models/transactionClass";
+import { sleep } from "@/common/utils/time";
 
 export default class InventoryItemRepository extends FireStoreRepository<string, InventoryItem> {
     private authenticator = new Authenticator();
@@ -44,6 +46,7 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         inventoryItem, 
         quantity, 
         price, 
+        transactionClass,
         source = undefined, 
         expiryDate = undefined, 
         batchNumber = undefined, 
@@ -62,6 +65,7 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         purchaseType?: PurchaseType,
         invoiceId?: string,
         transactionDate?: Date,
+        transactionClass: TransactionClass
     }): Promise<InventoryItem> {
         const transaction: Transaction = new Transaction({
             id: this.generateId(inventoryItem, source),
@@ -74,7 +78,8 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
             batchNumber: batchNumber,
             paymentMethod: paymentMethod,
             purchaseType: purchaseType,
-            invoiceId: invoiceId
+            invoiceId: invoiceId,
+            transactionClass: transactionClass
         });
 
         inventoryItem.availableQuantity += transaction.quantity;
@@ -155,7 +160,8 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
             batchNumber: row["batch_no"],
             purchaseType: this.getPurchaseType(row["purchase_type"]),
             transactionDate: this.parseDateFormat1(row["transaction_date"]),
-            invoiceId: row["invoice_no"]
+            invoiceId: row["invoice_no"],
+            transactionClass: parseInt(row["item_class"])
         });
 
     }
@@ -175,7 +181,6 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
             availableQuantity: 0,
             category: row["category"] ?? Category.med,
             transactions: [],
-            itemClass: parseInt(row["item_class"])
         });
 
         await this.create(item);

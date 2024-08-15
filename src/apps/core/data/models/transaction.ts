@@ -1,8 +1,8 @@
 import type Account from "@/apps/auth/data/models/account";
-import type Model from "@/common/models/model";
 import type InventoryItem from "./inventoryItem";
 import type PaymentMethod from "./paymentMethod";
 import type PurchaseType from "./purchaseType";
+import type TransactionClass from "./transactionClass";
 
 
 export default class Transaction {
@@ -19,6 +19,7 @@ export default class Transaction {
     paymentMethod?: PaymentMethod;
     purchaseType?: PurchaseType;
     invoiceId?: string;
+    transactionClass: TransactionClass
     
     inventoryItem: InventoryItem;
 
@@ -35,6 +36,7 @@ export default class Transaction {
         paymentMethod,
         purchaseType,
         invoiceId,
+        transactionClass,
         inventoryItem
     }: {
         id: string,
@@ -49,6 +51,7 @@ export default class Transaction {
         paymentMethod?: PaymentMethod,
         purchaseType?: PurchaseType,
         invoiceId?: string,
+        transactionClass: TransactionClass,
         inventoryItem?: InventoryItem
     }) {
         this.id = id;
@@ -63,7 +66,9 @@ export default class Transaction {
         this.paymentMethod = paymentMethod;
         this.purchaseType = purchaseType;
         this.invoiceId = invoiceId;
+        this.transactionClass = transactionClass;
         this.inventoryItem = inventoryItem;
+
     }
 
     get totalPrice(): number{

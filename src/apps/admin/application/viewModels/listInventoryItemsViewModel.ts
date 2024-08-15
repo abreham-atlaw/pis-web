@@ -1,5 +1,5 @@
 import InventoryItem from "@/apps/core/data/models/inventoryItem";
-import ItemClass from "@/apps/core/data/models/itemClass";
+import TransactionClass from "@/apps/core/data/models/transactionClass";
 import InventoryItemRepository from "@/apps/core/data/repositories/inventoryItemRepository";
 import type { ModelField } from "@/common/state/modelListState";
 import type ModelListState from "@/common/state/modelListState";
@@ -70,7 +70,13 @@ export default class ListInventoryItemsViewModel extends ModelListViewModel<Inve
             {
                 name: "Class",
                 getValue(instance) {
-                    return ItemClass[instance.itemClass].toUpperCase();;
+                    let value = "";
+                    for(const cls of [TransactionClass.main, TransactionClass.side]){
+                        if(instance.hasTransactionClass(cls)){
+                            value = value.concat(TransactionClass[cls].toUpperCase());
+                        }
+                    }
+                    return value;
                 },
                 allowFilter: true
             },
