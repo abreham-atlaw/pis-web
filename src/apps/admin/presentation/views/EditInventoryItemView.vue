@@ -10,6 +10,7 @@ import TextFieldComponent from '@/common/components/form/TextFieldComponent.vue'
 import AsyncButton from '@/common/components/buttons/AsyncButton.vue';
 import { AsyncStatus } from '@/common/state/baseState';
 import BaseButtonVue from '@/common/components/buttons/BaseButton.vue';
+import TextSelectionFieldComponent from '@/common/components/form/TextSelectionFieldComponent.vue';
 
 
 export default defineComponent({
@@ -17,7 +18,8 @@ export default defineComponent({
         let state = ref(new EditModelState<InventoryItem, InventoryItemForm>(new InventoryItemForm(), this.$route.query.id as any));
         return {
             state,
-            viewModel: new EditInventoryItemViewModel(state.value as any)
+            viewModel: new EditInventoryItemViewModel(state.value as any),
+            InventoryItemForm
         };
     },
     methods:{
@@ -39,7 +41,7 @@ export default defineComponent({
             deep: true
         }
     },
-    components: { ViewModelViewVue, LabeledFieldComponent, TextFieldComponent, AsyncButton, BaseButtonVue }
+    components: { ViewModelViewVue, LabeledFieldComponent, TextFieldComponent, AsyncButton, BaseButtonVue, TextSelectionFieldComponent }
 })
 </script>
 <template>
@@ -66,6 +68,9 @@ export default defineComponent({
                 </LabeledFieldComponent>
                 <LabeledFieldComponent label="Price" class="mt-10">
                     <TextFieldComponent type="number" :field="(state.form.price as any)" step=".01" :prepare-input="(value: string) => {return Number.parseFloat(value)}"/>
+                </LabeledFieldComponent>
+                <LabeledFieldComponent label="Category" class="mt-10">
+                    <TextSelectionFieldComponent :field="state.form.category" :choices="InventoryItemForm.CATEGORIES"/>
                 </LabeledFieldComponent>
 
                 <div class="w-full mt-10 flex">

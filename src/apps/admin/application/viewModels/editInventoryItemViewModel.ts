@@ -18,6 +18,7 @@ export default class EditInventoryItemViewModel extends EditModelViewModel<Inven
         model.unitQuantity = form.unitQuantity.getValue()!;
         model.price = form.price.getValue()! / model.unitQuantity;
         model.barCode = form.barCode.getValue() ?? undefined;
+        model.category = form.category.getValue();
     }
 
     protected syncModelToForm(model: InventoryItem, form: InventoryItemForm): void {
@@ -27,6 +28,7 @@ export default class EditInventoryItemViewModel extends EditModelViewModel<Inven
         form.unitQuantity.value = model.unitQuantity;
         form.price.value = model.price * model.unitQuantity;
         form.barCode.value = model.barCode ?? null;
+        form.category.value = model.category ?? "MED";
     }
     protected initRepository(): FireStoreRepository<string, InventoryItem> {
         return new InventoryItemRepository();
