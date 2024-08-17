@@ -11,9 +11,15 @@ export default class TransactInventoryItemForm extends Form{
     source = new TextField();
     expiryDate = new Field<Date>();
     batchNumber = new TextField();
-    invoiceId = new TextField();
+    invoiceId = new TextField(false);
     isCredit = new Field<boolean>();
     isSide = new Field<boolean>();
+
+    constructor(){
+        super();
+        this.isCredit.value = false;
+        this.isSide.value = false;
+    }
 
     getFields(): Field<any>[] {
         return [
