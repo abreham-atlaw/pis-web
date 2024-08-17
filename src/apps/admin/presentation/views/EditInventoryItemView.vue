@@ -35,7 +35,7 @@ export default defineComponent({
         state: {
             handler(newValue: EditModelState<InventoryItem, InventoryItemForm>){
                 if(newValue.status === AsyncStatus.done || newValue.deleteState.status === AsyncStatus.done){
-                    this.$router.push("/admin/inventory/list");
+                    this.$router.push(`/admin/inventory/transact?id=${newValue.instance.id}`);
                 }
             },
             deep: true
