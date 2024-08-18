@@ -16,7 +16,7 @@ import DateFieldComponent from '@/common/components/form/DateFieldComponent.vue'
 
 export default defineComponent({
     data() {
-        let state = ref(new TransactInventoryItemState(this.$route.query.id as string));
+        let state = ref(new TransactInventoryItemState(this.$route.query.id as string, this.$route.query["t-id"]as string | undefined));
         return {
             state,
             viewModel: new TransactInventoryItemViewModel(state.value as any),

@@ -103,6 +103,25 @@ export default defineComponent({
                     <td class="px-6 py-4 border-b">
                         {{  transaction.account?.username ?? "Unknown"}}<span class="uppercase" v-if="transaction.account !== undefined"> ({{ (transaction.account.role == Role.admin)?'Admin':'Cashier' }})</span>
                     </td>
+                    <td>
+                        <RouterLink
+                                    :key="link.link"
+                                    v-for="link in [
+                                        {
+                                            link: `/admin/inventory/transact?id=${transaction.inventoryItem.id}&t-id=${transaction.id}`,
+                                            bg: 'primary',
+                                            icon: 'fa-solid fa-pen',
+                                        },
+
+                                    ]"
+                                    :to="link.link"
+                                    class="text-indigo-600 hover:text-indigo-900 mr-4 bg-primary text-light rounded-full w-10 h-10 block flex"
+                                    :class="`bg-${link.bg}`"
+                                    >
+
+                                    <i class="m-auto text-light" :class="link.icon"></i>
+                                </RouterLink>
+                    </td>
                     </tr>
                 </tbody>
             </table>
