@@ -70,6 +70,11 @@ export default defineComponent({
                     >
                         User
                     </th>
+                    <th
+                        class="px-6 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800"
+                    >
+                        Edit
+                    </th>
                     </tr>
                 </thead>
                 <tbody>
