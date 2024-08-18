@@ -113,7 +113,7 @@ export default defineComponent({
                                     :key="link.link"
                                     v-for="link in [
                                         {
-                                            link: `/admin/inventory/transact?id=${transaction.inventoryItem.id}&t-id=${transaction.id}`,
+                                            link: `/admin/inventory/transact?id=${transaction.inventoryItem.id}&t-id=${encodeURIComponent(transaction.id)}`,
                                             bg: 'primary',
                                             icon: 'fa-solid fa-pen',
                                         },
