@@ -13,7 +13,6 @@ export default class InventoryItemSerializer extends Serializer<InventoryItem, D
         return {
             id: instance.id,
             name: instance.name,
-            available_quantity: instance.availableQuantity,
             unit: instance.unit,
             unit_quantity: instance.unitQuantity,
             transactions: this.transactionSerializer.serializeMany(instance.transactions),
@@ -27,7 +26,6 @@ export default class InventoryItemSerializer extends Serializer<InventoryItem, D
         const item = new InventoryItem({
             id: data.id,
             name: data.name,
-            availableQuantity: data.available_quantity,
             unit: data.unit,
             transactions: this.transactionSerializer.deserializeMany(data.transactions),
             price: data.price,

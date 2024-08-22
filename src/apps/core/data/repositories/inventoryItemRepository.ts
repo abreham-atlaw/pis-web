@@ -82,7 +82,6 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
             transactionClass: transactionClass
         });
 
-        inventoryItem.availableQuantity += transaction.quantity;
         inventoryItem.transactions.push(transaction);
         await this.save(inventoryItem);
         return inventoryItem;
@@ -178,7 +177,6 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
             price: parseFloat(row["price"]),
             unit: row["unit"],
             unitQuantity: parseFloat(row["unit_quantity"]),
-            availableQuantity: 0,
             category: row["category"] ?? Category.med,
             transactions: [],
         });
@@ -284,15 +282,6 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
 
     }
 
-
-    public async syncAvailableQuantity(){
-        const items = await this.getAll();
-
-        for(const item of items){
-            item.availableQuantity = item.transactions.map((t) => t.quantity).reduce((sum, current) => sum+current, 0);
-            await this.update(item);
-        }
-    }
 
     public async getItemsTransactions(items: InventoryItem[]){
         let transactions = [];

@@ -9,7 +9,6 @@ export default class InventoryItem implements Model<string> {
     id: string | null;
     name: string;
     price: number;
-    availableQuantity: number;
     transactions: Transaction[];
     unit: string;
     unitQuantity: number;
@@ -20,7 +19,6 @@ export default class InventoryItem implements Model<string> {
         id = null,
         name,
         price,
-        availableQuantity = 0,
         transactions = [],
         unit,
         unitQuantity = 0,
@@ -30,7 +28,6 @@ export default class InventoryItem implements Model<string> {
         id?: string | null;
         name: string;
         price: number;
-        availableQuantity?: number;
         transactions?: Transaction[];
         unit: string;
         unitQuantity: number;
@@ -40,7 +37,6 @@ export default class InventoryItem implements Model<string> {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.availableQuantity = availableQuantity;
         this.transactions = transactions;
         this.unit = unit;
         this.unitQuantity = unitQuantity;
@@ -62,6 +58,13 @@ export default class InventoryItem implements Model<string> {
 
     get pkAvailableQuantity(): number{
         return this.availableQuantity / this.unitQuantity;
+    }
+
+    get availableQuantity(): number{
+        return this.transactions.map((t) => t.quantity).reduce(
+            (sum, q) => sum+q,
+            0
+        );
     }
 
     get hasBarCode(): boolean{
