@@ -24,7 +24,7 @@ export default class TransactInventoryItemViewModel extends AsyncViewModel<Trans
 
     private syncTransactionToForm(transaction: Transaction, form: TransactInventoryItemForm){
         form.batchNumber.value = transaction.batchNumber;
-        form.quantity.value = transaction.quantity;
+        form.quantity.value = transaction.quantity / transaction.inventoryItem.unitQuantity;
         form.price.value = transaction.price;
         form.expiryDate.value = transaction.expiryDate;
         form.source.value = transaction.source;
@@ -35,7 +35,7 @@ export default class TransactInventoryItemViewModel extends AsyncViewModel<Trans
 
     private syncFormToTransaction(form: TransactInventoryItemForm, transaction: Transaction){
         transaction.batchNumber = form.batchNumber.getValue();
-        transaction.quantity = form.quantity.getValue();
+        transaction.quantity = form.quantity.getValue() * transaction.inventoryItem.unitQuantity;
         transaction.price = form.price.getValue();
         transaction.expiryDate = form.expiryDate.getValue();
         transaction.source = form.source.getValue();

@@ -87,6 +87,19 @@ export default abstract class ModelListViewModel<M extends Model<string>> extend
         this.syncState();
     }
 
+    public async search(query?: string){
+        if(query.length == 0 || query == null){
+            this.state.values = this.state.allValues;
+            return;
+        }
+        this.state.values = this.state.allValues!.filter(
+            (instance: M) => this.state.fields!.map(
+                (field) => field.getValue(instance).toLowerCase().includes(query.toLowerCase())
+            ).includes(true)
+        );
+        this.syncState();
+    }
+
 
 
 }

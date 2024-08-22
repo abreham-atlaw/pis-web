@@ -1,27 +1,28 @@
 <script lang="ts">
 import InventoryItem from '@/apps/core/data/models/inventoryItem';
-import InventoryItemRepository from '@/apps/core/data/repositories/inventoryItemRepository';
 import BaseButtonVue from '@/common/components/buttons/BaseButton.vue';
 import ViewModelView from '@/common/components/views/ViewModelView.vue';
 import ModelListState, { type ModelField } from '@/common/state/modelListState';
 import MathUtils from '@/common/utils/math';
-import ModelListViewModel from '@/common/viewmodel/modelListViewModel';
 import { defineComponent, ref } from 'vue';
 import ListInventoryItemsViewModel from '../../application/viewModels/listInventoryItemsViewModel';
 import TableHeadingComponent from '../components/TableHeadingComponent.vue';
-import type Field from '@/common/forms/fields';
+import { TextField } from '@/common/forms/fields';
+import TextFieldComponent from '@/common/components/form/TextFieldComponent.vue';
 
 export default defineComponent({
-    components: { ViewModelView, BaseButtonVue, TableHeadingComponent },
+    components: { ViewModelView, BaseButtonVue, TableHeadingComponent, TextFieldComponent},
     data() {
         let state = ref(new ModelListState<InventoryItem>());
         let showFilterDropdown = ref(false);
+
         return {
             state,
             viewModel: new ListInventoryItemsViewModel(state.value as any),
             MathUtils,
             showFilterDropdown,
-            filterOptions: ['kg', 'liters', 'pieces'] // static values for the filter options
+            filterOptions: ['kg', 'liters', 'pieces'], // static values for the filter options,
+            searchField: new TextField(false)
         };
     },
     methods: {
@@ -42,6 +43,9 @@ export default defineComponent({
         },
         sort(field?: ModelField<InventoryItem>){
             this.viewModel.sort(field);
+        },
+        search(query?: string){
+            this.viewModel.search(query);
         }
     }
 });
@@ -57,6 +61,11 @@ export default defineComponent({
                 <BaseButtonVue class="ml-5" @click="exportPurchases">Export Purchases</BaseButtonVue>
                 <RouterLink to="/admin/inventory/edit" class="block ml-auto"><BaseButtonVue>New</BaseButtonVue></RouterLink>
             </div>
+
+            <div class="mt-10 w-1/2">
+                <TextFieldComponent :field="searchField" @change="search" placeholder="Search..."/>
+            </div>
+
             <table class="w-full text-left border-collapse mt-16">
                 <thead class="border-b">
                         <TableHeadingComponent 

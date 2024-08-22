@@ -215,22 +215,30 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
       };
       
     private isDuplicated(transactions: Transaction[]): boolean{
-        const IMPORT_DATES = [
-            "Jul 20, 2024, 12:12 PM",
-            "Jul 20, 2024, 09:44 AM",
-            "Jul 14, 2024, 04:32 PM"
-        ].map((dateStr) => new Date(Date.parse(dateStr.replace(",", ""))));
+        // const IMPORT_DATES = [//6/15/2024
+
+        // ].map((dateStr) => new Date(Date.parse(dateStr.replace(",", ""))));
         
-        for(const transaction of transactions){
-            let isSimiliar = false;
-            for(const date of IMPORT_DATES){
-                if(this.similiarTime(date, transaction.date, 1)){
-                    isSimiliar = true;
-                    break;
+        // for(const transaction of transactions){
+        //     let isSimiliar = false;
+        //     for(const date of IMPORT_DATES){
+        //         if(this.similiarTime(date, transaction.date, 1)){
+        //             isSimiliar = true;
+        //             break;
+        //         }
+        //     }
+        //     if(!isSimiliar){
+        //         return false 
+        //     }
+        // }
+
+        for(const field of ["batchNumber", "date", "expiryDate", "invoiceId", "paymentMethod", "price", "purchaseType", "quantity", "source", "transactionClass"]){
+            
+            for(const transaction of transactions.slice(1)){
+                if(transactions[0][field].toString() != transaction[field].toString()){
+                    console.log(`${transactions[0][field]} != ${transaction[field]}`);
+                    return false;
                 }
-            }
-            if(!isSimiliar){
-                return false 
             }
         }
 
