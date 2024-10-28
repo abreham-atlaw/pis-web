@@ -362,4 +362,12 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         );
     }
 
+    public async getAllInvoices(): Promise<string[]>{
+        const invoices = (await this.getItemsTransactions(
+            await this.getAll()
+        )).map(
+            (transaction) => transaction.invoiceId);
+        return [...new Set(invoices)];
+    }
+
 }

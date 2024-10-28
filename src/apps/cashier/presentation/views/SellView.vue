@@ -12,17 +12,33 @@ import type SellForm from '../../application/forms/sellForm';
 import PaymentMethodChoiceField from '../components/PaymentMethodChoiceField.vue';
 import TextSelectionFieldComponent from '@/common/components/form/TextSelectionFieldComponent.vue';
 import DateFieldComponent from '@/common/components/form/DateFieldComponent.vue';
+import Field from '@/common/forms/fields';
 
 export default defineComponent({
     data() {
         let state = ref(new SellState());
+        
+        let commonDateField = new Field<Date>();
+        commonDateField.setValue(new Date(Date.now()));
+        
         return {
             state,
-            viewModel: new SellViewModel(state.value as any)
+            viewModel: new SellViewModel(state.value as any),
+            commonDateField
         };
     },
     methods: {
+
+        syncCommonDate(){
+            for(let form of this.state.forms){
+                if(form.date.getValue() == null){
+                    form.date.setValue(this.commonDateField.getValue());
+                }
+            }
+        },
+
         sell(){
+            this.syncCommonDate();
             this.viewModel.sell();
         },
         addForm() {
@@ -47,8 +63,18 @@ export default defineComponent({
 
             <div class="w-2/3 overflow-scroll h-full p-10">
 
+
+                <LabeledFieldComponent label="Common Date" class="mt-10">
+                    <DateFieldComponent :field="commonDateField"/>
+                </LabeledFieldComponent>
+
+                <AsyncButton :state="state" @click.prevent="addForm" bg="success">
+                    ADD ITEM
+                </AsyncButton>
+
+                
                 <div class="flex flex-wrap">
-                    <form v-for="form, i in state.forms" :key="i" class="w-[49%] p-10 bg-primaryDark bg-opacity-60 rounded-2xl mr-auto my-5" @submit.prevent="">
+                    <form v-for="form, i in Array.from({length: state.forms.length}, (_, i) => state.forms.at(state.forms.length - i - 1))" :key="i" class="w-[49%] p-10 bg-primaryDark bg-opacity-60 rounded-2xl mr-auto my-5" @submit.prevent="">
                         <div class="flex">
                             <h3 class="text-lg font-bold">Item {{ i+1 }}</h3>
                             <button @click.prevent="() => {removeForm(i)}" class="ml-auto"><i class="fa-solid fa-trash p-2 bg-danger text-light rounded"></i></button>
@@ -56,6 +82,7 @@ export default defineComponent({
 
                         <LabeledFieldComponent label="Item" class="mt-10">
                             <ItemChoiceField 
+                            :key="i"
                             :on-item-selected="(item) => {selectItem(form as SellForm, item);}"
                             :items="state.items! as any" 
                             :field="form.item as any"/>
@@ -79,8 +106,7 @@ export default defineComponent({
                             <TextFieldComponent :field="(form.invoiceId)"/>
                         </LabeledFieldComponent>
                         <LabeledFieldComponent label="Payment Method" class="mt-10">
-                            <PaymentMethodChoiceField 
-                            :field="form.paymentMethod as any"/>
+                            <PaymentMethodChoiceField :field="form.paymentMethod"/>
                         </LabeledFieldComponent>
                         
                         <div class="mt-5">
@@ -91,9 +117,7 @@ export default defineComponent({
                 </div>
                 
                 
-                <AsyncButton :state="state" @click.prevent="addForm" bg="success">
-                    ADD ITEM
-                </AsyncButton>
+                
 
             </div>
             <div class="w-1/3 backdrop-blur-xl p-10 flex flex-col">
@@ -101,17 +125,19 @@ export default defineComponent({
                 <h2 class="text-2xl font-extrabold">Sale Summary</h2>
 
                 <div class="flex font-extrabold mt-10">
-                    <span class="w-1/4">Item</span>
-                    <span class="w-1/4">Quantity</span>
-                    <span class="w-1/4">Price</span>
-                    <span class="w-1/4">Total</span>
+                    <span class="w-1/5">No</span>
+                    <span class="w-1/5">Item</span>
+                    <span class="w-1/5">Quantity</span>
+                    <span class="w-1/5">Price</span>
+                    <span class="w-1/5">Total</span>
                 </div>
 
                 <div v-for="form, i in state.forms" :key="i" class="flex mt-5">
-                    <span class="w-1/4">{{ form.item.getValue()?.name }}</span>
-                    <span class="w-1/4">{{ form.quantity.getValue() }}</span>
-                    <span class="w-1/4">{{ form.price.getValue() }}</span>
-                    <span class="w-1/4">{{ form.price.getValue() * form.quantity.getValue() }}</span>
+                    <span class="w-1/5">{{ i+1 }}</span>
+                    <span class="w-1/5">{{ form.item.getValue()?.name }}</span>
+                    <span class="w-1/5">{{ form.quantity.getValue() }}</span>
+                    <span class="w-1/5">{{ form.price.getValue() }}</span>
+                    <span class="w-1/5">{{ form.price.getValue() * form.quantity.getValue() }}</span>
                 </div>
                 <div class="flex flex-col border-t pt-5 mt-5">
                     <span class="w-1/4 ml-auto">{{ state.forms.map(

@@ -8,6 +8,7 @@ import TransactInventoryItemViewVue from '@/apps/admin/presentation/views/Transa
 import CashierViewVue from '@/apps/cashier/presentation/views/CashierView.vue'
 import SellViewVue from '@/apps/cashier/presentation/views/SellView.vue'
 import ReportViewVue from '@/apps/admin/presentation/views/ReportView.vue'
+import ListInvoicesView from '@/apps/admin/presentation/views/ListInvoicesView.vue'
 import DashboardViewVue from '@/apps/admin/presentation/views/DashboardView.vue'
 import SplashViewVue from '@/apps/core/presentation/views/SplashView.vue'
 import TrackInventoryItemViewVue from '@/apps/admin/presentation/views/TrackInventoryItemView.vue'
@@ -65,6 +66,11 @@ const router = createRouter({
           path: "import",
           name: "Import",
           component: CSVImportView
+        },
+        {
+          path: "invoices",
+          name: "Invoices",
+          component: ListInvoicesView
         }
       ]
     },
