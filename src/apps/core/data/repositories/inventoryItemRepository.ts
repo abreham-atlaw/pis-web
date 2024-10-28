@@ -12,6 +12,7 @@ import CoreProviders from "@/di/coreProviders";
 import type TransactInventoryItemForm from "@/apps/admin/application/forms/transactInventoryItemForm";
 import TransactionClass from "../models/transactionClass";
 import { sleep } from "@/common/utils/time";
+import type { Invoice } from "../models/invoice";
 
 export default class InventoryItemRepository extends FireStoreRepository<string, InventoryItem> {
     private authenticator = new Authenticator();
@@ -362,12 +363,29 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         );
     }
 
-    public async getAllInvoices(): Promise<string[]>{
-        const invoices = (await this.getItemsTransactions(
-            await this.getAll()
-        )).map(
-            (transaction) => transaction.invoiceId);
-        return [...new Set(invoices)];
+    public async getAllInvoices(): Promise<Invoice[]>{
+
+
+        const invoicesMap: Map<string, Invoice> = new Map();
+        
+        for(const transaction of await this.getItemsPurchases(await this.getAll())){
+            if(!invoicesMap.has(transaction.invoiceId)){
+                invoicesMap.set(transaction.invoiceId, {
+                    date: transaction.date,
+                    price: 0,
+                    purchaseType: transaction.purchaseType,
+                    source: transaction.source,
+                    items: [],
+                    id: transaction.invoiceId
+                })
+            }
+
+            const invoice = invoicesMap.get(transaction.invoiceId);
+            invoice.price += transaction.price;
+            invoice.items.push(transaction.inventoryItem);
+        }
+        
+        return Array.from(invoicesMap.values());
     }
 
 }
