@@ -13,6 +13,7 @@ import PaymentMethodChoiceField from '../components/PaymentMethodChoiceField.vue
 import TextSelectionFieldComponent from '@/common/components/form/TextSelectionFieldComponent.vue';
 import DateFieldComponent from '@/common/components/form/DateFieldComponent.vue';
 import Field from '@/common/forms/fields';
+import BooleanFieldComponent from '@/common/components/form/BooleanFieldComponent.vue';
 
 export default defineComponent({
     data() {
@@ -51,7 +52,7 @@ export default defineComponent({
             form.price.setValue(item.price);
         }
     },
-    components: { ViewModelView, ItemChoiceField, LabeledFieldComponent, TextFieldComponent, AsyncButton, PaymentMethodChoiceField, TextSelectionFieldComponent, DateFieldComponent }
+    components: { BooleanFieldComponent, ViewModelView, ItemChoiceField, LabeledFieldComponent, TextFieldComponent, AsyncButton, PaymentMethodChoiceField, TextSelectionFieldComponent, DateFieldComponent }
 })
 
 </script>
@@ -107,6 +108,9 @@ export default defineComponent({
                         </LabeledFieldComponent>
                         <LabeledFieldComponent label="Payment Method" class="mt-10">
                             <PaymentMethodChoiceField :field="form.paymentMethod"/>
+                        </LabeledFieldComponent>
+                        <LabeledFieldComponent label="With Invoice" class="mt-10">
+                            <BooleanFieldComponent :field="form.hasInvoice"/>
                         </LabeledFieldComponent>
                         
                         <div class="mt-5">

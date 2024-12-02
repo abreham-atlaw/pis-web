@@ -33,4 +33,11 @@ export default class RoutingUtils{
 		const url = URL.createObjectURL(blob);
 		return url;
 	}
+
+	static createAndOpen(content: string, type: string): string{
+		const url = this.createLink(content, type);
+		window.open(url, '_blank');
+		return url;
+	}
+
 }

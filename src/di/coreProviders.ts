@@ -1,3 +1,4 @@
+import FirestoreBackupManager from "@/common/repositories/firestoreBackupManager";
 import { FIREBASE_CONFIG } from "@/configs/firebase-config";
 import { initializeApp, type FirebaseApp } from "firebase/app";
 import { Firestore, getFirestore } from "firebase/firestore";
@@ -18,4 +19,10 @@ export default class CoreProviders{
 		return getFirestore();
 	}
 
+
+	public static provideBackupManager(): FirestoreBackupManager{
+
+		return new FirestoreBackupManager(["inventory_items", "admins", "cashiers"]);
+
+	}
 }

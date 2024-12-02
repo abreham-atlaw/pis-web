@@ -182,5 +182,6 @@ export abstract class FireStoreRepository<P, M extends Model<P>> implements Repo
 	public async attachForeignKeys(instance: M): Promise<void>{
 
 	}
+
 }
 

@@ -1,5 +1,5 @@
 import type InventoryItem from "@/apps/core/data/models/inventoryItem";
-import BaseState from "@/common/state/baseState";
+import BaseState, { AsyncState } from "@/common/state/baseState";
 
 
 export default class DashboardState extends BaseState{
@@ -13,5 +13,6 @@ export default class DashboardState extends BaseState{
     totalSales?: number;
     totalItems?: number;
 
+    backupState = new AsyncState();
 
 }

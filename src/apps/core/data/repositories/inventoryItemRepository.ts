@@ -54,7 +54,8 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         paymentMethod = undefined,
         purchaseType = PurchaseType.cash,
         invoiceId = undefined,
-        transactionDate = undefined
+        transactionDate = undefined,
+        sellHasInvoice = undefined
     }: {
         inventoryItem: InventoryItem,
         quantity: number,
@@ -66,7 +67,8 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         purchaseType?: PurchaseType,
         invoiceId?: string,
         transactionDate?: Date,
-        transactionClass: TransactionClass
+        transactionClass: TransactionClass,
+        sellHasInvoice?: boolean
     }): Promise<InventoryItem> {
         const transaction: Transaction = new Transaction({
             id: this.generateId(inventoryItem, source),
@@ -80,7 +82,8 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
             paymentMethod: paymentMethod,
             purchaseType: purchaseType,
             invoiceId: invoiceId,
-            transactionClass: transactionClass
+            transactionClass: transactionClass,
+            sellHasInvoice: sellHasInvoice
         });
 
         inventoryItem.transactions.push(transaction);
@@ -329,23 +332,73 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
 
     public async exportTransactionsToCSV(transactions: Transaction[], fields?: string[]): Promise<string>{
         
-        const defaultFields = ['id', 'quantity', 'date', 'price', 'source', 'invoiceId'];
+        const defaultFields = [
+            'date', 
+            'invoiceId', 
+            'id', 
+            'inventoryItem.id',
+            'inventoryItem.name',
+            'inventoryItem.unit',
+            'price', 
+            'quantity', 
+            'totalPrice',
+            'source', 
+        ];
+
+        const absFields = [
+            "quantity",
+            "price"
+        ]
+
+        const titles = new Map<string, string>([
+            ['date', "Date"],
+            ["invoiceId", "Invoice Id"],
+            ["id", "Transaction Id"],
+            ["inventoryItem.id", "Item Id"],
+            ["inventoryItem.name", "Item Name"],
+            ["inventoryItem.unit", "Unit"],
+            ["price", "Price"],
+            ["quantity", "Quantity"],
+            ["totalPrice", "Total Price"],
+        ]);
 
         const selectedFields = fields || defaultFields;
 
         const data = transactions.map(transaction => {
             const transactionData: Record<string, any> = {};
             selectedFields.forEach(field => {
-                transactionData[field] = transaction[field as keyof Transaction];
-                if(field === "quantity"){
-                    transactionData[field] = Math.abs(transactionData[field]);
+
+                const title = titles.get(field) ?? field;
+
+                if(field.includes(".")){
+                    const parts = field.split(".");
+                    const mediator = transaction[parts[0]];
+                    transactionData[title]= mediator[parts[1] as keyof InventoryItem];
+                    return;
                 }
+
+                transactionData[title] = transaction[field as keyof Transaction];
+                
+                for(const absField of absFields){
+                    if(field.toLowerCase().includes(absField)){
+                        transactionData[title] = Math.abs(transactionData[title]);
+                    }
+                }
+
+                if(field.toLowerCase().includes("date")){
+                    transactionData[title] = new Date(transactionData[title]).toLocaleString("en-US", {
+                        'day': '2-digit',
+                        'month': '2-digit',
+                        'year': 'numeric'
+                    });
+                }
+                
             });
             return transactionData;
         });
 
         const csv = Papa.unparse(data, {
-            columns: selectedFields
+            columns: selectedFields.map((field) => titles.get(field) ?? field)
         });
 
         return csv;

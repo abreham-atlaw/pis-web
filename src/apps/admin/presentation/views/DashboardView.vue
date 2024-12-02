@@ -4,6 +4,7 @@ import DashboardState from '../../application/states/dashboardState';
 import DashboardViewModel from '../../application/viewModels/dashboardViewModel';
 import ViewModelView from '@/common/components/views/ViewModelView.vue';
 import MathUtils from '@/common/utils/math';
+import AsyncButton from '@/common/components/buttons/AsyncButton.vue';
 
 
 export default defineComponent({
@@ -15,7 +16,12 @@ export default defineComponent({
             MathUtils
         };
     },
-    components: { ViewModelView }
+    methods: {
+      exportBackup(){
+        this.viewModel.exportBackup();
+      }
+    },
+    components: { ViewModelView, AsyncButton}
 })
 
 </script>
@@ -23,9 +29,15 @@ export default defineComponent({
 
     <ViewModelView :view-model="viewModel" :state="state">
         <div class="py-8 px-6">
-            <h3 class="text-3xl font-medium">
-              Dashboard
-            </h3>
+            <div class="flex">
+              <h3 class="text-3xl font-medium">
+                Dashboard
+              </h3>
+              <div class="ml-auto">
+                <AsyncButton :onclick="exportBackup" :state="state.backupState">Export Backup</AsyncButton>
+              </div>
+            </div>
+            
         
             <div class="mt-4">
               <div class="flex flex-wrap -mx-6">

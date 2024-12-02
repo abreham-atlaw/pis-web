@@ -19,7 +19,8 @@ export default class Transaction {
     paymentMethod?: PaymentMethod;
     purchaseType?: PurchaseType;
     invoiceId?: string;
-    transactionClass: TransactionClass
+    transactionClass: TransactionClass;
+    sellHasInvoice: boolean;
     
     inventoryItem: InventoryItem;
 
@@ -37,6 +38,7 @@ export default class Transaction {
         purchaseType,
         invoiceId,
         transactionClass,
+        sellHasInvoice,
         inventoryItem
     }: {
         id: string,
@@ -52,6 +54,7 @@ export default class Transaction {
         purchaseType?: PurchaseType,
         invoiceId?: string,
         transactionClass: TransactionClass,
+        sellHasInvoice?: boolean
         inventoryItem?: InventoryItem
     }) {
         this.id = id;
@@ -67,8 +70,8 @@ export default class Transaction {
         this.purchaseType = purchaseType;
         this.invoiceId = invoiceId;
         this.transactionClass = transactionClass;
+        this.sellHasInvoice = sellHasInvoice ?? false;
         this.inventoryItem = inventoryItem;
-
     }
 
     get totalPrice(): number{
