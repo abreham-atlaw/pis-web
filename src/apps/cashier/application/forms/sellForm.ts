@@ -21,7 +21,7 @@ export default class SellForm extends Form{
     batchNumber = new TextField();
     date = new Field<Date>();
     invoiceId = new TextField();
-    hasInvoice = new Field<boolean>();
+    hasInvoice = new Field<boolean>(false);
 
     getFields(): Field<any>[] {
         return [
