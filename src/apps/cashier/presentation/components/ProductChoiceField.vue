@@ -4,7 +4,7 @@
         <div class="flex flex-col" v-if="field.getValue() == null">
             <input v-model="searchQuery" class="px-10 py-3 mx-2 my-2 rounded-xl block w-full text-dark" type="text" placeholder="Search...">
             <div class="overflow-y-auto h-[150px]">
-                <div v-for="(item, i) in filteredItems.slice(0, 5)" :key="i" class="flex items-center" :class="(selectedItem === item)?'bg-warning text-white':'bg-light text-dark'">
+                <div v-for="(item, i) in filteredItems" :key="i" class="flex items-center" :class="(selectedItem === item)?'bg-warning text-white':'bg-light text-dark'">
                     <button class="px-10 py-3 mx-2 my-2 rounded-xl" @click.prevent="() => {onSelect(item)}">
                         [ {{item.id}} ]{{ item.name }}
                     </button>
