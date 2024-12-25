@@ -3,6 +3,8 @@ import type DashboardState from "../states/dashboardState";
 import InventoryItemRepository from "@/apps/core/data/repositories/inventoryItemRepository";
 import FirestoreBackupManager from "@/common/repositories/firestoreBackupManager";
 import RoutingUtils from "@/common/utils/routing";
+import backup from "@/assets/backup-fix.json";
+import CoreProviders from "@/di/coreProviders";
 
 
 
@@ -15,6 +17,11 @@ export default class DashboardViewModel extends AsyncViewModel<DashboardState>{
 
     public async onInit(): Promise<void> {
         await super.onInit();
+
+        // console.log(`Backup Head: ${backup.inventory_items["054KX0VQXsylR1yuPzrm"].name}`)
+        // const backupManager = CoreProviders.provideBackupManager();
+        // await backupManager.restore(backup);
+
         this.state.items = await this.inventoryItemRepository.getAll()
         this.state.lowInventoryItems = this.state.items!.sort(
             (item1, item2) => item1.availableQuantity - item2.availableQuantity
@@ -36,6 +43,7 @@ export default class DashboardViewModel extends AsyncViewModel<DashboardState>{
 
         this.state.totalItems = this.state.items.length;
 
+        
     }
 
     public async exportBackup(){

@@ -55,7 +55,8 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         purchaseType = PurchaseType.cash,
         invoiceId = undefined,
         transactionDate = undefined,
-        sellHasInvoice = undefined
+        sellHasInvoice = undefined,
+        complete = undefined
     }: {
         inventoryItem: InventoryItem,
         quantity: number,
@@ -68,7 +69,8 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
         invoiceId?: string,
         transactionDate?: Date,
         transactionClass: TransactionClass,
-        sellHasInvoice?: boolean
+        sellHasInvoice?: boolean,
+        complete?: boolean
     }): Promise<InventoryItem> {
         const transaction: Transaction = new Transaction({
             id: this.generateId(inventoryItem, source),
@@ -83,7 +85,8 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
             purchaseType: purchaseType,
             invoiceId: invoiceId,
             transactionClass: transactionClass,
-            sellHasInvoice: sellHasInvoice
+            sellHasInvoice: sellHasInvoice,
+            complete: complete
         });
 
         inventoryItem.transactions.push(transaction);
@@ -164,7 +167,8 @@ export default class InventoryItemRepository extends FireStoreRepository<string,
             purchaseType: this.getPurchaseType(row["purchase_type"]),
             transactionDate: this.parseDateFormat1(row["transaction_date"]),
             invoiceId: row["invoice_no"],
-            transactionClass: parseInt(row["item_class"])
+            transactionClass: parseInt(row["item_class"]),
+            complete: row["complete_flag"]
         });
 
     }

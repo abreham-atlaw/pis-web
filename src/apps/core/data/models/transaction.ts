@@ -21,6 +21,7 @@ export default class Transaction {
     invoiceId?: string;
     transactionClass: TransactionClass;
     sellHasInvoice: boolean;
+    complete: boolean;
     
     inventoryItem: InventoryItem;
 
@@ -39,6 +40,7 @@ export default class Transaction {
         invoiceId,
         transactionClass,
         sellHasInvoice,
+        complete,
         inventoryItem
     }: {
         id: string,
@@ -54,7 +56,8 @@ export default class Transaction {
         purchaseType?: PurchaseType,
         invoiceId?: string,
         transactionClass: TransactionClass,
-        sellHasInvoice?: boolean
+        sellHasInvoice?: boolean,
+        complete?: boolean,
         inventoryItem?: InventoryItem
     }) {
         this.id = id;
@@ -71,6 +74,7 @@ export default class Transaction {
         this.invoiceId = invoiceId;
         this.transactionClass = transactionClass;
         this.sellHasInvoice = sellHasInvoice ?? false;
+        this.complete = complete ?? true;
         this.inventoryItem = inventoryItem;
     }
 

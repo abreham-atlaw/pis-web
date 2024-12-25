@@ -48,6 +48,10 @@ export default class ListInventoryItemsViewModel extends ModelListViewModel<Inve
             {
                 name: "Price",
                 getValue(instance) {
+                    if(instance.price == null){
+                        console.log(instance.getPK());
+                        return "null";
+                    }
                     return instance.price.toString();
                 },
                 allowFilter: false,

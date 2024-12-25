@@ -22,7 +22,7 @@ export default class CoreProviders{
 
 	public static provideBackupManager(): FirestoreBackupManager{
 
-		return new FirestoreBackupManager(["inventory_items", "admins", "cashiers"]);
+		return new FirestoreBackupManager(["inventory_items"]);
 
 	}
 }
