@@ -2,6 +2,7 @@ import AsyncViewModel from "@/common/viewmodel/asyncViewModel";
 import type SellState from "../states/sellState";
 import SellForm from "../forms/sellForm";
 import InventoryItemRepository from "@/apps/core/data/repositories/inventoryItemRepository";
+import TransactionClass from "@/apps/core/data/models/transactionClass";
 
 
 
@@ -24,7 +25,7 @@ export default class SellViewModel extends AsyncViewModel<SellState>{
             batchNumber: form.batchNumber.getValue()!,
             transactionDate: form.date.getValue()!,
             invoiceId: form.invoiceId.getValue()!,
-            transactionClass: form.item.getValue().transactions.filter((t) => t.batchNumber == form.batchNumber.getValue())[0].transactionClass,
+            transactionClass: form.item.getValue().transactions.filter((t) => t.batchNumber == form.batchNumber.getValue())[0]?.transactionClass ?? TransactionClass.side,
             sellHasInvoice: form.hasInvoice.getValue() ?? false
         });
     }

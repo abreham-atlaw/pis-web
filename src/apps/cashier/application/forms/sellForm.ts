@@ -18,7 +18,7 @@ export default class SellForm extends Form{
     );
     price = new Field<number>();
     paymentMethod = new Field<PaymentMethod>();
-    batchNumber = new TextField();
+    batchNumber = new TextField(false);
     date = new Field<Date>();
     invoiceId = new TextField();
     hasInvoice = new Field<boolean>(false);
